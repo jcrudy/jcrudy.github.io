@@ -8,7 +8,7 @@ import tinkerer.paths
 # **************************************************************
 
 # Change this to the name of your blog
-project = 'My blog'
+project = 'A Fistful of Data'
 
 # Change this to the tagline of your blog
 tagline = 'Add intelligent tagline here'
@@ -17,10 +17,10 @@ tagline = 'Add intelligent tagline here'
 description = 'This is an awesome blog'
 
 # Change this to your name
-author = 'Winston Smith'
+author = 'Jason Rudy'
 
 # Change this to your copyright string
-copyright = '1984, ' + author
+copyright = '2013, ' + author
 
 # Change this to your blog root URL (required for RSS feed)
 website = 'http://127.0.0.1/blog/html/'
@@ -30,7 +30,7 @@ website = 'http://127.0.0.1/blog/html/'
 # **************************************************************
 
 # Add your Disqus shortname to enable comments powered by Disqus
-disqus_shortname = None
+disqus_shortname = 'jcrudy-blog'
 
 # Change your favicon (new favicon goes in _static directory)
 html_favicon = 'tinkerer.ico'
