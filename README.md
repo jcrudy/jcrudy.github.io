@@ -1,4 +1,4 @@
-tinker-test
+Blog Source
 ===========
 
-Try out the Tinker framework
+This is the source for my blog.  It also contains the derived HTML files.
