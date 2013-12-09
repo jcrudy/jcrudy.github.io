@@ -1,0 +1,228 @@
+
+
+<!DOCTYPE html><!--[if lt IE 7]>      <html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:og="http://ogp.me/ns#"
+    xmlns:fb="https://www.facebook.com/2008/fbml" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:og="http://ogp.me/ns#"
+    xmlns:fb="https://www.facebook.com/2008/fbml" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:og="http://ogp.me/ns#"
+    xmlns:fb="https://www.facebook.com/2008/fbml" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:og="http://ogp.me/ns#"
+    xmlns:fb="https://www.facebook.com/2008/fbml" class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="description" content="This is an awesome blog">
+        <meta name="viewport" content="width=device-width">
+        <title>Introduction to IScala &mdash; A Fistful of Data</title>
+            <link rel="stylesheet" href="../../../_static/normalize.css" type="text/css">
+            <link rel="stylesheet" href="../../../_static/sphinx.css" type="text/css">
+            <link rel="stylesheet" href="../../../_static/main.css" type="text/css">
+            <link rel="stylesheet" href="../../../_static/style.css" type="text/css">
+            <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+            <link rel="stylesheet" href="../../../_static/webfont.css" type="text/css">
+        <link rel="shortcut icon" href="../../../_static/tinkerer.ico" /><!-- Load modernizr and JQuery -->
+        <script src="../../../_static/vendor/modernizr-2.6.2.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="../../../_static/vendor/jquery-1.8.2.min.js"><\/script>')</script>
+        <script src="../../../_static/plugins.js"></script>
+        <script src="../../../_static/main.js"></script>
+        <link rel="next" title="Blogstart" href="../02/blogstart.html" /><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../rss.html" /><script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script><script type="text/javascript" src="../../../_static/underscore.js"></script><script type="text/javascript" src="../../../_static/doctools.js"></script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><script type="text/javascript" src="../../../_static/disqus.js"></script></head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
+
+      <div id="container">
+  <nav>
+    <ul><li class="quicklink"><div class="rss">
+        <a href="../../../rss.html" title="Subscribe via RSS"><span class="webfont">B</span></a>
+    </div></li><li class="main-nav">
+          <a href="../../../index.html">Home</a>
+        </li>
+      <li class="main-nav">
+          <a href="../../../pages/about.html">About Me</a>
+        </li>
+      <li class="main-nav">
+          <a href="../../../pages/my_software.html">Software</a>
+        </li>
+      </ul>
+  </nav>
+
+  <header>
+            <hgroup>
+              <h1><a href="../../../index.html">A Fistful of Data</a></h1><h2>Add intelligent tagline here</h2></hgroup>
+          </header>
+      <div class="main-container"><div class="main wrapper clearfix"><article><ul class="related clearfix">
+            <li class="left"></li>
+            <li class="right"><a href="../02/blogstart.html">Blogstart</a> &raquo; </li>
+        </ul><div class="timestamp postmeta">
+            <span>December 08, 2013</span>
+        </div>
+    <div class="section" id="introduction-to-iscala">
+<h1>Introduction to IScala</h1>
+<p>Python is an amazingly productive glue language.  It&#8217;s become popular among data scientists over the past several years, partially because of great libraries like numpy, scipy, pandas, scikit-learn, statsmodels, etc., and partially because so much of data science consists simply of gluing things together.  There is a part of my life, though, that consists of actually implementing machine learning algorithms.  Python does not make that part easy.  In order to write efficient numerical code for Python, you need to move the majority of the computation out of Python and into statically typed, compiled code.  The best solution I&#8217;ve found is Cython, which compiles a Python-like language to C while taking care of the Python C api for you.  I wrote py-earth in Cython and am fairly happy with the result.  However, Cython is still a (really fantastic) hack.  Getting good performance out of Cython code requires knowledge of both C and the internals of Python, and most of the good stuff about Python - passing around functions, object-oriented design, readability - is lost when you start to really optimize.  If you want to combine concurrency with objects, you actually have to start passing pointers around.</p>
+<p>I guess what I&#8217;m saying is I want to branch out a little.  I&#8217;d like to find a language where I can be productive both as a scientific user and as a scientific developer, something modern, new but not too new, mainstream but with just a bit of an edge.  Tall.  Anyway, it seems like there are two new languages out there vying for my affection.  I chose Scala over Julia for two reasons.  Firstly, Scala is a general purpose programming language.  While statisticians and academic scientists are very happy to use single purpose tools like R to do their analyses, data scientists need the ability to actually write software and integrate their analyses into larger projects.  Secondly, Scala is implemented on the JVM and compatible with Java.  That means I can use any Java library from within Scala and use Scala to write map-reduce queries for an Hadoop cluster without using the streaming interface.</p>
+<p>So I&#8217;m exploring the Scala ecosystem and learning the language (which so far I think is fantastic).  My goal is to do some data analyses and implement one or two non-trivial algorithms in Scala.  But one step at a time.  Today I want to share <a class="reference external" href="https://github.com/mattpap/IScala">IScala</a>, which is basically just iPython with a Scala backend.  Although I actually rarely use iPython, I know a lot of people do and I suspect that Scala adoption will require the existence of a useful iPython replacement.</p>
+<div class="section" id="installing">
+<h2>Installing</h2>
+<p>The IScala readme file lists several installation options.  The one that worked for me was as follows.  First, download the <a class="reference external" href="https://github.com/mattpap/IScala/releases">latest tarball</a> and unpack it somewhere.  I put it directly in my home directory.  Then create a scala profile for ipython:</p>
+<div class="highlight-none"><div class="highlight"><pre>$ipython profile create scala
+[ProfileCreate] Generating default config file: u&#39;/Users/jason/.ipython/profile_scala/ipython_config.py&#39;
+[ProfileCreate] Generating default config file: u&#39;/Users/jason/.ipython/profile_scala/ipython_qtconsole_config.py&#39;
+[ProfileCreate] Generating default config file: u&#39;/Users/jason/.ipython/profile_scala/ipython_notebook_config.py&#39;
+[ProfileCreate] Generating default config file: u&#39;/Users/jason/.ipython/profile_scala/ipython_nbconvert_config.py&#39;
+</pre></div>
+</div>
+<p>The output above tells you the location of the ipython_config.py file.  The next step is to edit ipython_config.py to tell iPython about the IScala kernel, as below:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># Configuration file for ipython.</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">()</span>
+
+<span class="c"># Use the IScala kernel</span>
+<span class="hll"><span class="n">c</span><span class="o">.</span><span class="n">KernelManager</span><span class="o">.</span><span class="n">kernel_cmd</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;java&quot;</span><span class="p">,</span> <span class="s">&quot;-jar&quot;</span><span class="p">,</span>
+</span><span class="hll">                              <span class="s">&quot;$ISCALA_PATH/lib/IScala.jar&quot;</span><span class="p">,</span>
+</span><span class="hll">                              <span class="s">&quot;--profile&quot;</span><span class="p">,</span>
+</span><span class="hll">                              <span class="s">&quot;{connection_file}&quot;</span><span class="p">,</span>
+</span><span class="hll">                              <span class="s">&quot;--parent&quot;</span><span class="p">]</span>
+</span></pre></div>
+</div>
+<p>After you get this working, with $ISCALA_PATH replaced by the path to wherever you put the unpacked IScala download, you should be able to run IScala by saying:</p>
+<div class="highlight-none"><div class="highlight"><pre>$ipython notebook --profile scala
+</pre></div>
+</div>
+<p>or similarly for console or qtconsole.</p>
+</div>
+<div class="section" id="taking-it-for-a-spin">
+<h2>Taking it for a spin</h2>
+<p>I&#8217;m going to try generating a random matrix with a standard normal distribution.  The first thing I&#8217;ll need to do is import breeze.  My first attempt failed.</p>
+<div class="iscala container">
+<div class="code scala highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">breeze.linalg._</span>
+<span class="kn">import</span> <span class="nn">breeze.stats.distributions._</span>
+</pre></div>
+</div>
+<div class="highlight-python"><pre>&lt;console&gt;:7: error: not found: value breeze
+       import breeze.linalg._
+              ^
+&lt;console&gt;:8: error: not found: value breeze
+       import breeze.stats.distributions._
+              ^</pre>
+</div>
+</div>
+<p>I needed to tell sbt where to find breeze.  It turns out you can use iPython magic to talk to sbt like this.</p>
+<div class="iscala container">
+<div class="code scala highlight-python"><pre>%resolvers += "ScalaNLP Maven2" at "http://repo.scalanlp.org/repo"
+
+%resolvers += "Scala Tools Snapshots" at "http://scala-tools.org/repo-snapshots/"
+
+%resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/"
+
+%resolvers += "Sonatype Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
+
+%libraryDependencies += "org.scalanlp" %% "breeze" % "0.6-SNAPSHOT"
+
+%update</pre>
+</div>
+<div class="highlight-python"><pre>[info] Resolving org.scalanlp#breeze_2.10;0.6-SNAPSHOT ...
+[info] Resolving org.scala-lang#scala-library;2.10.3 ...
+[info] Resolving org.scalanlp#breeze-macros_2.10;0.1 ...
+[info] Resolving org.scala-lang#scala-reflect;2.10.3 ...
+[info] Resolving com.thoughtworks.paranamer#paranamer;2.2 ...
+[info] Resolving com.github.fommil.netlib#all;1.1.2 ...
+[info] Resolving net.sourceforge.f2j#arpack_combined_all;0.1 ...
+[info] Resolving com.github.fommil.netlib#core;1.1.2 ...
+[info] Resolving com.github.fommil.netlib#netlib-native_ref-osx-x86_64;1.1 ...
+[info] Resolving com.github.fommil.netlib#native_ref-java;1.1 ...
+[info] Resolving com.github.fommil#jniloader;1.1 ...
+[info] Resolving com.github.fommil.netlib#netlib-native_ref-linux-x86_64;1.1 ...
+[info] Resolving com.github.fommil.netlib#netlib-native_ref-linux-i686;1.1 ...
+[info] Resolving com.github.fommil.netlib#netlib-native_ref-win-x86_64;1.1 ...
+[info] Resolving com.github.fommil.netlib#netlib-native_ref-win-i686;1.1 ...
+[info] Resolving com.github.fommil.netlib#netlib-native_ref-linux-armhf;1.1 ...
+[info] Resolving com.github.fommil.netlib#netlib-native_system-osx-x86_64;1.1 ...
+[info] Resolving com.github.fommil.netlib#native_system-java;1.1 ...
+[info] Resolving com.github.fommil.netlib#netlib-native_system-linux-x86_64;1.1 ...
+[info] Resolving com.github.fommil.netlib#netlib-native_system-linux-i686;1.1 ...
+[info] Resolving com.github.fommil.netlib#netlib-native_system-linux-armhf;1.1 ...
+[info] Resolving com.github.fommil.netlib#netlib-native_system-win-x86_64;1.1 ...
+[info] Resolving com.github.fommil.netlib#netlib-native_system-win-i686;1.1 ...
+[info] Resolving org.scalanlp#lpsolve;5.5.2-SNAPSHOT ...
+[info] Resolving net.sf.opencsv#opencsv;2.3 ...
+[info] Resolving com.github.rwl#jtransforms;2.4.0 ...
+[info] Resolving junit#junit;4.8.2 ...
+[info] Resolving org.apache.commons#commons-math3;3.2 ...
+[info] Resolving com.typesafe#scalalogging-slf4j_2.10;1.0.1 ...
+[info] Resolving org.slf4j#slf4j-api;1.7.2 ...</pre>
+</div>
+<div class="code scala highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">breeze.linalg._</span>
+<span class="kn">import</span> <span class="nn">breeze.stats.distributions._</span>
+</pre></div>
+</div>
+</div>
+<p>That worked!  I can now generate my random matrix like this:</p>
+<div class="iscala container">
+<div class="code scala highlight-python"><pre>val x = DenseMatrix.fill(10,10)(Gaussian(0,1).draw())</pre>
+</div>
+<div class="highlight-python"><pre>0.4695170376110142   0.5086639312405534    ... (10 total)
+0.2604624080687952   -0.03678938632256435  ...
+-1.0528337756159565  0.10082649287241126   ...
+-0.550492849679171   -0.5761878622563654   ...
+-0.9817603551889219  0.7958446618784706    ...
+-1.0001995322763473  -1.2424889465651479   ...
+-0.5879313146878662  1.206569217055404     ...
+1.890300548243616    -0.30273380341887257  ...
+0.24792587873136573  -0.04329745764599858  ...
+1.5057194826425122   0.9516921598743895    ...</pre>
+</div>
+</div>
+</div>
+<div class="section" id="final-thoughts">
+<h2>Final thoughts</h2>
+<p>So IScala is up and running.  There doesn&#8217;t yet appear to be any support for displaying plots in the notebook, and it is a little annoying that I have to %update to add new dependencies (which causes the Scala process to restart and all existing objects to be lost from memory).  However, IScala is a new project and these are minor issues.  During the process I discovered something disconcerting about the Scala ecosystem, however.  There is not currently a Scala equivalent of numpy.  That is, there is no basic structure that everyone agrees is the standard backend array type.  Instead, there are several competing packages (of which <a class="reference external" href="http://www.scalanlp.org/">breeze</a> is just one) that accomplish this extremely basic function.  I need to decide which one I want to develop on.</p>
+</div>
+</div>
+
+    <div class="postmeta">
+        <div class="author">
+            <span>Posted by Jason Rudy</span>
+        </div>
+        
+        
+        </div>
+    <div id="disqus_thread"></div><script type="text/javascript">    var disqus_shortname = "jcrudy-blog";    var disqus_identifier = "2013/12/08/introduction_to_iscala";    disqus_thread();</script><noscript>Please enable JavaScript to view the    <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><ul class="related clearfix">
+            <li class="left"></li>
+            <li class="right"><a href="../02/blogstart.html">Blogstart</a> &raquo; </li>
+        </ul></article><aside class="sidebar"><section><div class="widget">
+    <h1>Recent Posts</h1>
+    <ul><li>
+            <a href="#">Introduction to IScala</a>
+        </li><li>
+            <a href="../02/blogstart.html">Blogstart</a>
+        </li></ul>
+</div>
+</section><section><div class="widget" id="searchbox">
+    <h1>Search</h1>
+    <form action="../../../search.html" method="get">
+        <input type="text" name="q" />
+        <button type="submit"><span class="webfont">L</span></button>
+    </form>
+</div></section></aside></div> <!-- #main --></div> <!-- #main-container -->
+
+        <div class="footer-container"><footer class="wrapper">&copy; Copyright 2013, Jason Rudy. Powered by <a href="http://www.tinkerer.me/">Tinkerer</a> and <a href="http://sphinx.pocoo.org/">Sphinx</a>.</footer></div> <!-- footer-container -->
+
+      </div> <!--! end of #container --><!--[if lt IE 7 ]>
+          <script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>
+          <script>window.attachEvent('onload',function(){CFInstall.check({mode:'overlay'})})</script>
+        <![endif]-->
+    </body>
+</html>

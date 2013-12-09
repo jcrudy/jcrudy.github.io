@@ -36,7 +36,7 @@ disqus_shortname = 'jcrudy-blog'
 html_favicon = 'tinkerer.ico'
 
 # Pick another Tinkerer theme or use your own
-html_theme = "minimal5"
+html_theme = "local_theme4"
 render_sidebar = True
 
 # Theme-specific options, see docs
@@ -58,7 +58,8 @@ posts_per_page = 10
 
 # Add other Sphinx extensions here
 extensions = ['tinkerer.ext.blog', 'tinkerer.ext.disqus', 'sphinx.ext.mathjax', 
-              'sphinxcontrib.bibtex', 'sphinx.ext.viewcode', 'sphinxjp.themecore']
+              'sphinxcontrib.bibtex', 'sphinx.ext.viewcode', 'sphinxjp.themecore',
+              'matplotlib.sphinxext.ipython_directive']
 
 # Add other template paths here
 templates_path = ['_templates']
