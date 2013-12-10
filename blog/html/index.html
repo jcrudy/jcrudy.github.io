@@ -71,7 +71,7 @@
 <h1><a href="2013/12/08/introduction_to_iscala.html">Introduction to IScala</a></h1>
 <p>Python is an amazingly productive glue language.  It’s become popular among data scientists over the past several years, partially because of great libraries like numpy, scipy, pandas, scikit-learn, statsmodels, etc., and partially because so much of data science consists simply of gluing things together.  There is a part of my life, though, that consists of actually implementing machine learning algorithms.  Python does not make that part easy.  In order to write efficient numerical code for Python, you need to move the majority of the computation out of Python and into statically typed, compiled code.  The best solution I’ve found is Cython, which compiles a Python-like language to C while taking care of the Python C api for you.  I wrote py-earth in Cython and am fairly happy with the result.  However, Cython is still a (really fantastic) hack.  Getting good performance out of Cython code requires knowledge of both C and the internals of Python, and most of the good stuff about Python - passing around functions, object-oriented design, readability - is lost when you start to really optimize.  If you want to combine concurrency with objects, you actually have to start passing pointers around.</p>
 <p>I guess what I’m saying is I want to branch out a little.  I’d like to find a language where I can be productive both as a scientific user and as a scientific developer, something modern, new but not too new, mainstream but with just a bit of an edge.  Tall.  Anyway, it seems like there are two new languages out there vying for my affection.  I chose Scala over Julia for two reasons.  Firstly, Scala is a general purpose programming language.  While statisticians and academic scientists are very happy to use single purpose tools like R to do their analyses, data scientists need the ability to actually write software and integrate their analyses into larger projects.  Secondly, Scala is implemented on the JVM and compatible with Java.  That means I can use any Java library from within Scala and use Scala to write map-reduce queries for an Hadoop cluster without using the streaming interface.</p>
-<p>So I’m exploring the Scala ecosystem and learning the language (which so far I think is fantastic).  My goal is to do some data analyses and implement one or two non-trivial algorithms in Scala.  But one step at a time.  Today I want to share <a class="reference external" href="https://github.com/mattpap/IScala">IScala</a>, which is basically just iPython with a Scala backend.  Although I actually rarely use iPython, I know a lot of people do and I suspect that Scala adoption will require the existence of a useful iPython replacement.</p>
+<p>So I’m exploring the Scala ecosystem and learning the language (which so far I think is fantastic).  My goal is to do some data analyses and implement one or two non-trivial algorithms in Scala.  But one step at a time.  Today I want to share <a class="reference external" href="https://github.com/mattpap/IScala">IScala</a>, which is basically just IPython with a Scala backend.  Although I actually rarely use IPython, I know a lot of people do and I suspect that Scala adoption will require the existence of a useful IPython replacement.</p>
 <div class="section" id="installing">
 <h2>Installing</h2>
 <p>The IScala readme file lists several installation options.  The one that worked for me was as follows.  First, download the <a class="reference external" href="https://github.com/mattpap/IScala/releases">latest tarball</a> and unpack it somewhere.  I put it directly in my home directory.  Then create a scala profile for ipython:</p>
@@ -82,7 +82,7 @@
 [ProfileCreate] Generating default config file: u'/Users/jason/.ipython/profile_scala/ipython_nbconvert_config.py'
 </pre></div>
 </div>
-<p>The output above tells you the location of the ipython_config.py file.  The next step is to edit ipython_config.py to tell iPython about the IScala kernel, as below:</p>
+<p>The output above tells you the location of the ipython_config.py file.  The next step is to edit ipython_config.py to tell IPython about the IScala kernel, as below:</p>
 <div class="highlight-python"><div class="highlight"><pre><span class="c"># Configuration file for ipython.</span>
 <span class="n">c</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">()</span>
 
@@ -116,7 +116,7 @@
               ^</pre>
 </div>
 </div>
-<p>I needed to tell sbt where to find breeze.  It turns out you can use iPython magic to talk to sbt like this.</p>
+<p>I needed to tell sbt where to find breeze.  It turns out you can use IPython magic to talk to sbt like this.</p>
 <div class="iscala container">
 <div class="code scala highlight-python"><pre>%resolvers += &quot;ScalaNLP Maven2&quot; at &quot;http://repo.scalanlp.org/repo&quot;
 

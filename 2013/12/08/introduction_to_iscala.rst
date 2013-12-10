@@ -13,7 +13,7 @@ Python is an amazingly productive glue language.  It's become popular among data
 
 I guess what I'm saying is I want to branch out a little.  I'd like to find a language where I can be productive both as a scientific user and as a scientific developer, something modern, new but not too new, mainstream but with just a bit of an edge.  Tall.  Anyway, it seems like there are two new languages out there vying for my affection.  I chose Scala over Julia for two reasons.  Firstly, Scala is a general purpose programming language.  While statisticians and academic scientists are very happy to use single purpose tools like R to do their analyses, data scientists need the ability to actually write software and integrate their analyses into larger projects.  Secondly, Scala is implemented on the JVM and compatible with Java.  That means I can use any Java library from within Scala and use Scala to write map-reduce queries for an Hadoop cluster without using the streaming interface.
 
-So I'm exploring the Scala ecosystem and learning the language (which so far I think is fantastic).  My goal is to do some data analyses and implement one or two non-trivial algorithms in Scala.  But one step at a time.  Today I want to share IScala_, which is basically just iPython with a Scala backend.  Although I actually rarely use iPython, I know a lot of people do and I suspect that Scala adoption will require the existence of a useful iPython replacement.
+So I'm exploring the Scala ecosystem and learning the language (which so far I think is fantastic).  My goal is to do some data analyses and implement one or two non-trivial algorithms in Scala.  But one step at a time.  Today I want to share IScala_, which is basically just IPython with a Scala backend.  Although I actually rarely use IPython, I know a lot of people do and I suspect that Scala adoption will require the existence of a useful IPython replacement.
 
 
 Installing
@@ -31,7 +31,7 @@ The IScala readme file lists several installation options.  The one that worked 
 	[ProfileCreate] Generating default config file: u'/Users/jason/.ipython/profile_scala/ipython_nbconvert_config.py'
 
 
-The output above tells you the location of the ipython_config.py file.  The next step is to edit ipython_config.py to tell iPython about the IScala kernel, as below:
+The output above tells you the location of the ipython_config.py file.  The next step is to edit ipython_config.py to tell IPython about the IScala kernel, as below:
 
 .. code-block:: python
 	:emphasize-lines: 5,6,7,8,9
@@ -88,7 +88,7 @@ I'm going to try generating a random matrix with a standard normal distribution.
 .. 	:width: 100%
 
 
-I needed to tell sbt where to find breeze.  It turns out you can use iPython magic to talk to sbt like this.
+I needed to tell sbt where to find breeze.  It turns out you can use IPython magic to talk to sbt like this.
 
 
 .. container:: iscala
