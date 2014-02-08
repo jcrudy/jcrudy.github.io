@@ -21,7 +21,7 @@ Let it be known that this fine community member was interested in MARS not for r
 
 	model = Pipeline([('earth',Earth()),('log',LogisticRegression())])
 
-The above construction is equivalent to using the earth package from R with glm=list(family=binomial).  
+The above construction is equivalent to using the earth package from R with `glm=list(family=binomial)`.  
 
 Adaboost requires a classifier that can handle weighted samples.  The `Earth` class satisfies this requirement.  `LogisticRegression` does not, but we can replace it with `SGDClassifier` using `loss='log'` to get an equivalent Pipeline that can handle sample weights.  Or, at least, it seems like it could.  As it turns out, though, the `Pipeline` class doesn't actually know how to act as a base estimator in `AdaBoostClassifier`.  When you try to fit the resulting model, tyou get an error.
 
