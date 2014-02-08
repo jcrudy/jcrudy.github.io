@@ -23,7 +23,7 @@
 </pre></div>
 </div>
 <p>The above construction is equivalent to using the earth package from R with <cite>glm=list(family=binomial)</cite>.</p>
-<p>Adaboost requires a classifier that can handle weighted samples.  The <cite>Earth</cite> class satisfies this requirement.  <cite>LogisticRegression</cite> does not, but we can replace it with <cite>SGDClassifier</cite> using <cite>loss=’log’</cite> to get an equivalent Pipeline that can handle sample weights.  Or, at least, it seems like it could.  As it turns out, though, the <cite>Pipeline</cite> class doesn’t actually know how to act as a base estimator in <cite>AdaBoostClassifier</cite>.  When you try to fit the resulting model, tyou get an error.</p>
+<p>Adaboost requires a classifier that can handle weighted samples.  The <cite>Earth</cite> class satisfies this requirement.  <cite>LogisticRegression</cite> does not, but we can replace it with <cite>SGDClassifier</cite> using <cite>loss=’log’</cite> to get an equivalent Pipeline that can handle sample weights.  Or, at least, it seems like it could.  As it turns out, though, the <cite>Pipeline</cite> class doesn’t actually know how to act as a base estimator in <cite>AdaBoostClassifier</cite>.  When you try to fit the resulting model, you get an error.</p>
 <div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
 <span class="kn">from</span> <span class="nn">pyearth</span> <span class="kn">import</span> <span class="n">Earth</span>
 <span class="kn">from</span> <span class="nn">sklearn.linear_model.stochastic_gradient</span> <span class="kn">import</span> <span class="n">SGDClassifier</span>
