@@ -1,0 +1,178 @@
+
+
+<!DOCTYPE html><!--[if lt IE 7]>      <html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:og="http://ogp.me/ns#"
+    xmlns:fb="https://www.facebook.com/2008/fbml" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:og="http://ogp.me/ns#"
+    xmlns:fb="https://www.facebook.com/2008/fbml" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:og="http://ogp.me/ns#"
+    xmlns:fb="https://www.facebook.com/2008/fbml" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:og="http://ogp.me/ns#"
+    xmlns:fb="https://www.facebook.com/2008/fbml" class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="description" content="This blog is pretty okay">
+        <meta name="viewport" content="width=device-width">
+        <title>Boosting with MARS &mdash; A Fistful of Data</title>
+            <link rel="stylesheet" href="../../../_static/normalize.css" type="text/css">
+            <link rel="stylesheet" href="../../../_static/sphinx.css" type="text/css">
+            <link rel="stylesheet" href="../../../_static/main.css" type="text/css">
+            <link rel="stylesheet" href="../../../_static/style.css" type="text/css">
+            <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+            <link rel="stylesheet" href="../../../_static/webfont.css" type="text/css">
+        <link rel="shortcut icon" href="../../../_static/tinkerer.ico" /><!-- Load modernizr and JQuery -->
+        <script src="../../../_static/vendor/modernizr-2.6.2.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="../../../_static/vendor/jquery-1.8.2.min.js"><\/script>')</script>
+        <script src="../../../_static/plugins.js"></script>
+        <script src="../../../_static/main.js"></script>
+        <link rel="next" title="Introduction to IScala" href="../../../2013/12/08/introduction_to_iscala.html" /><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../rss.html" /><script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script><script type="text/javascript" src="../../../_static/underscore.js"></script><script type="text/javascript" src="../../../_static/doctools.js"></script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><script type="text/javascript" src="../../../_static/disqus.js"></script></head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
+
+      <div id="container">
+  <nav>
+    <ul><li class="quicklink"><div class="rss">
+        <a href="../../../rss.html" title="Subscribe via RSS"><span class="webfont">B</span></a>
+    </div></li><li class="main-nav">
+          <a href="../../../index.html">Home</a>
+        </li>
+      <li class="main-nav">
+          <a href="../../../pages/about.html">About Me</a>
+        </li>
+      <li class="main-nav">
+          <a href="../../../pages/my_software.html">Software</a>
+        </li>
+      </ul>
+  </nav>
+
+  <header>
+            <hgroup>
+              <h1><a href="../../../index.html">A Fistful of Data</a></h1><h2>data wrangling and other cowboy stuff</h2></hgroup>
+          </header>
+      <div class="main-container"><div class="main wrapper clearfix"><article><ul class="related clearfix">
+            <li class="left"></li>
+            <li class="right"><a href="../../../2013/12/08/introduction_to_iscala.html">Introduction to IScala</a> &raquo; </li>
+        </ul><div class="timestamp postmeta">
+            <span>February 07, 2014</span>
+        </div>
+    <div class="section" id="boosting-with-mars">
+<h1>Boosting with MARS</h1>
+<p>Someone wrote me a few months ago asking for advice.  He was an R user who wanted to combine the adaboost algorithm with MARS and was starting to look outside the R community.  As a recovering (and occasionally relapsing) R user myself, I was only too happy to look into the matter.  As it turns out, it&#8217;s actually not that hard to do with a combination of scikit-learn and py-earth.  I now recount the adventure in detail.</p>
+<p>Let it be known that this fine community member was interested in MARS not for regression, as is its usual role, but for classification.  This first challenge is easily accomplished using the Pipeline class, as follows.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span> <span class="nn">pyearth</span> <span class="kn">import</span> <span class="n">Earth</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([(</span><span class="s">&#39;earth&#39;</span><span class="p">,</span><span class="n">Earth</span><span class="p">()),(</span><span class="s">&#39;log&#39;</span><span class="p">,</span><span class="n">LogisticRegression</span><span class="p">())])</span>
+</pre></div>
+</div>
+<p>The above construction is equivalent to using the earth package from R with glm=list(family=binomial).</p>
+<p>Adaboost requires a classifier that can handle weighted samples.  The <cite>Earth</cite> class satisfies this requirement.  <cite>LogisticRegression</cite> does not, but we can replace it with <cite>SGDClassifier</cite> using <cite>loss=&#8217;log&#8217;</cite> to get an equivalent Pipeline that can handle sample weights.  Or, at least, it seems like it could.  As it turns out, though, the <cite>Pipeline</cite> class doesn&#8217;t actually know how to act as a base estimator in <cite>AdaBoostClassifier</cite>.  When you try to fit the resulting model, tyou get an error.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+<span class="kn">from</span> <span class="nn">pyearth</span> <span class="kn">import</span> <span class="n">Earth</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model.stochastic_gradient</span> <span class="kn">import</span> <span class="n">SGDClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_classification</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble.weight_boosting</span> <span class="kn">import</span> <span class="n">AdaBoostClassifier</span>
+
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_classification</span><span class="p">()</span>
+<span class="n">classifier</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([(</span><span class="s">&#39;earth&#39;</span><span class="p">,</span><span class="n">Earth</span><span class="p">()),(</span><span class="s">&#39;log&#39;</span><span class="p">,</span><span class="n">SGDClassifier</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s">&#39;log&#39;</span><span class="p">))])</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">AdaBoostClassifier</span><span class="p">(</span><span class="n">base_estimator</span><span class="o">=</span><span class="n">classifier</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This code produces <cite>TypeError: base_estimator must be a subclass of ClassifierMixin</cite>.  You can get to the next error by making a special subclass of <cite>Pipeline</cite> like so.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+<span class="kn">from</span> <span class="nn">pyearth</span> <span class="kn">import</span> <span class="n">Earth</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model.stochastic_gradient</span> <span class="kn">import</span> <span class="n">SGDClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_classification</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble.weight_boosting</span> <span class="kn">import</span> <span class="n">AdaBoostClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="kn">import</span> <span class="n">ClassifierMixin</span>
+
+<span class="k">class</span> <span class="nc">ClassifierPipeline</span><span class="p">(</span><span class="n">Pipeline</span><span class="p">,</span> <span class="n">ClassifierMixin</span><span class="p">):</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">classes_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">steps</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">classes_</span>
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_classification</span><span class="p">()</span>
+<span class="n">classifier</span> <span class="o">=</span> <span class="n">ClassifierPipeline</span><span class="p">([(</span><span class="s">&#39;earth&#39;</span><span class="p">,</span><span class="n">Earth</span><span class="p">()),(</span><span class="s">&#39;log&#39;</span><span class="p">,</span><span class="n">SGDClassifier</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s">&#39;log&#39;</span><span class="p">))])</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">AdaBoostClassifier</span><span class="p">(</span><span class="n">base_estimator</span><span class="o">=</span><span class="n">classifier</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now this code gives <cite>ValueError: need more than 1 value to unpack</cite>.  That&#8217;s somewhat more inscrutible.  To get around this one you actually have to rewrite part of the <cite>Pipeline</cite> class itself.  I posted a modified <cite>Pipeline</cite> as a <a class="reference external" href="https://gist.github.com/jcrudy/7493865#file-pipeline-py">gist</a>.  You can patch it in and use it like this.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pipeline</span> <span class="kn">as</span> <span class="nn">alt_pipeline</span>
+<span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="kn">import</span> <span class="n">ClassifierMixin</span>
+<span class="kn">from</span> <span class="nn">pyearth</span> <span class="kn">import</span> <span class="n">Earth</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model.stochastic_gradient</span> <span class="kn">import</span> <span class="n">SGDClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_classification</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble.weight_boosting</span> <span class="kn">import</span> <span class="n">AdaBoostClassifier</span>
+
+<span class="k">class</span> <span class="nc">ClassifierPipeline</span><span class="p">(</span><span class="n">alt_pipeline</span><span class="o">.</span><span class="n">Pipeline</span><span class="p">,</span> <span class="n">ClassifierMixin</span><span class="p">):</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">classes_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">steps</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">classes_</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_classification</span><span class="p">()</span>
+<span class="n">classifier</span> <span class="o">=</span> <span class="n">ClassifierPipeline</span><span class="p">([(</span><span class="s">&#39;earth&#39;</span><span class="p">,</span><span class="n">Earth</span><span class="p">()),(</span><span class="s">&#39;log&#39;</span><span class="p">,</span><span class="n">SGDClassifier</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s">&#39;log&#39;</span><span class="p">))])</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">AdaBoostClassifier</span><span class="p">(</span><span class="n">base_estimator</span><span class="o">=</span><span class="n">classifier</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>So that&#8217;s how you use AdaBoost with MARS in Python.</p>
+</div>
+
+    <div class="postmeta">
+        <div class="author">
+            <span>Posted by Jason Rudy</span>
+        </div>
+        <div class="categories">
+            <span>
+                Filed under:
+                <a href="../../../categories/python.html">Python</a></span>
+        </div>
+        
+        </div>
+    <div id="disqus_thread"></div><script type="text/javascript">    var disqus_shortname = "jcrudy-blog";    var disqus_identifier = "2014/02/07/boosting_with_mars";    disqus_thread();</script><noscript>Please enable JavaScript to view the    <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><ul class="related clearfix">
+            <li class="left"></li>
+            <li class="right"><a href="../../../2013/12/08/introduction_to_iscala.html">Introduction to IScala</a> &raquo; </li>
+        </ul></article><aside class="sidebar"><section><div class="widget">
+    <h1>Recent Posts</h1>
+    <ul><li>
+            <a href="#">Boosting with MARS</a>
+        </li><li>
+            <a href="../../../2013/12/08/introduction_to_iscala.html">Introduction to IScala</a>
+        </li><li>
+            <a href="../../../2013/12/02/blogstart.html">Blogstart</a>
+        </li></ul>
+</div>
+</section><section><div class="widget" id="searchbox">
+    <h1>Search</h1>
+    <form action="../../../search.html" method="get">
+        <input type="text" name="q" />
+        <button type="submit"><span class="webfont">L</span></button>
+    </form>
+</div></section></aside></div> <!-- #main --></div> <!-- #main-container -->
+
+        <div class="footer-container"><footer class="wrapper">&copy; Copyright 2013 and 2014, Jason Rudy. Powered by <a href="http://www.tinkerer.me/">Tinkerer</a> and <a href="http://sphinx.pocoo.org/">Sphinx</a>.</footer></div> <!-- footer-container -->
+
+      </div> <!--! end of #container --><!--[if lt IE 7 ]>
+          <script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>
+          <script>window.attachEvent('onload',function(){CFInstall.check({mode:'overlay'})})</script>
+        <![endif]-->
+    </body>
+</html>

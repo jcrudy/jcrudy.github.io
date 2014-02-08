@@ -11,16 +11,16 @@ import tinkerer.paths
 project = 'A Fistful of Data'
 
 # Change this to the tagline of your blog
-tagline = 'Add intelligent tagline here'
+tagline = 'data wrangling and other cowboy stuff'
 
 # Change this to the description of your blog
-description = 'This is an awesome blog'
+description = 'This blog is pretty okay'
 
 # Change this to your name
 author = 'Jason Rudy'
 
 # Change this to your copyright string
-copyright = '2013, ' + author
+copyright = '2013 and 2014, ' + author
 
 # Change this to your blog root URL (required for RSS feed)
 website = 'http://jcrudy.github.io/blog/html/'

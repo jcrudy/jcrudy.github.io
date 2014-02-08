@@ -3,10 +3,83 @@
     <channel>
         <title>A Fistful of Data</title>
         <link>http://jcrudy.github.io/blog/html/</link>
-        <description>Add intelligent tagline here</description>
+        <description>data wrangling and other cowboy stuff</description>
         <language>en-us</language>
-        <pubDate>Sun, 08 Dec 2013 00:00:00 -0500</pubDate>
+        <pubDate>Fri, 07 Feb 2014 00:00:00 -0800</pubDate>
         
+        <item>
+            <link>http://jcrudy.github.io/blog/html/2014/02/07/boosting_with_mars.html</link>
+            <guid>http://jcrudy.github.io/blog/html/2014/02/07/boosting_with_mars.html</guid>
+            <title><![CDATA[Boosting with MARS]]></title>
+            <description><![CDATA[<div class="section" id="boosting-with-mars">
+<h1>Boosting with MARS</h1>
+<p>Someone wrote me a few months ago asking for advice.  He was an R user who wanted to combine the adaboost algorithm with MARS and was starting to look outside the R community.  As a recovering (and occasionally relapsing) R user myself, I was only too happy to look into the matter.  As it turns out, it’s actually not that hard to do with a combination of scikit-learn and py-earth.  I now recount the adventure in detail.</p>
+<p>Let it be known that this fine community member was interested in MARS not for regression, as is its usual role, but for classification.  This first challenge is easily accomplished using the Pipeline class, as follows.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model</span> <span class="kn">import</span> <span class="n">LogisticRegression</span>
+<span class="kn">from</span> <span class="nn">pyearth</span> <span class="kn">import</span> <span class="n">Earth</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([(</span><span class="s">'earth'</span><span class="p">,</span><span class="n">Earth</span><span class="p">()),(</span><span class="s">'log'</span><span class="p">,</span><span class="n">LogisticRegression</span><span class="p">())])</span>
+</pre></div>
+</div>
+<p>The above construction is equivalent to using the earth package from R with glm=list(family=binomial).</p>
+<p>Adaboost requires a classifier that can handle weighted samples.  The <cite>Earth</cite> class satisfies this requirement.  <cite>LogisticRegression</cite> does not, but we can replace it with <cite>SGDClassifier</cite> using <cite>loss=’log’</cite> to get an equivalent Pipeline that can handle sample weights.  Or, at least, it seems like it could.  As it turns out, though, the <cite>Pipeline</cite> class doesn’t actually know how to act as a base estimator in <cite>AdaBoostClassifier</cite>.  When you try to fit the resulting model, tyou get an error.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+<span class="kn">from</span> <span class="nn">pyearth</span> <span class="kn">import</span> <span class="n">Earth</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model.stochastic_gradient</span> <span class="kn">import</span> <span class="n">SGDClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_classification</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble.weight_boosting</span> <span class="kn">import</span> <span class="n">AdaBoostClassifier</span>
+
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_classification</span><span class="p">()</span>
+<span class="n">classifier</span> <span class="o">=</span> <span class="n">Pipeline</span><span class="p">([(</span><span class="s">'earth'</span><span class="p">,</span><span class="n">Earth</span><span class="p">()),(</span><span class="s">'log'</span><span class="p">,</span><span class="n">SGDClassifier</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s">'log'</span><span class="p">))])</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">AdaBoostClassifier</span><span class="p">(</span><span class="n">base_estimator</span><span class="o">=</span><span class="n">classifier</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This code produces <cite>TypeError: base_estimator must be a subclass of ClassifierMixin</cite>.  You can get to the next error by making a special subclass of <cite>Pipeline</cite> like so.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
+<span class="kn">from</span> <span class="nn">pyearth</span> <span class="kn">import</span> <span class="n">Earth</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model.stochastic_gradient</span> <span class="kn">import</span> <span class="n">SGDClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_classification</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble.weight_boosting</span> <span class="kn">import</span> <span class="n">AdaBoostClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="kn">import</span> <span class="n">ClassifierMixin</span>
+
+<span class="k">class</span> <span class="nc">ClassifierPipeline</span><span class="p">(</span><span class="n">Pipeline</span><span class="p">,</span> <span class="n">ClassifierMixin</span><span class="p">):</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">classes_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">steps</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">classes_</span>
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_classification</span><span class="p">()</span>
+<span class="n">classifier</span> <span class="o">=</span> <span class="n">ClassifierPipeline</span><span class="p">([(</span><span class="s">'earth'</span><span class="p">,</span><span class="n">Earth</span><span class="p">()),(</span><span class="s">'log'</span><span class="p">,</span><span class="n">SGDClassifier</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s">'log'</span><span class="p">))])</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">AdaBoostClassifier</span><span class="p">(</span><span class="n">base_estimator</span><span class="o">=</span><span class="n">classifier</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now this code gives <cite>ValueError: need more than 1 value to unpack</cite>.  That’s somewhat more inscrutible.  To get around this one you actually have to rewrite part of the <cite>Pipeline</cite> class itself.  I posted a modified <cite>Pipeline</cite> as a <a class="reference external" href="https://gist.github.com/jcrudy/7493865#file-pipeline-py">gist</a>.  You can patch it in and use it like this.</p>
+<div class="code python highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">pipeline</span> <span class="kn">as</span> <span class="nn">alt_pipeline</span>
+<span class="kn">from</span> <span class="nn">sklearn.base</span> <span class="kn">import</span> <span class="n">ClassifierMixin</span>
+<span class="kn">from</span> <span class="nn">pyearth</span> <span class="kn">import</span> <span class="n">Earth</span>
+<span class="kn">from</span> <span class="nn">sklearn.linear_model.stochastic_gradient</span> <span class="kn">import</span> <span class="n">SGDClassifier</span>
+<span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_classification</span>
+<span class="kn">from</span> <span class="nn">sklearn.ensemble.weight_boosting</span> <span class="kn">import</span> <span class="n">AdaBoostClassifier</span>
+
+<span class="k">class</span> <span class="nc">ClassifierPipeline</span><span class="p">(</span><span class="n">alt_pipeline</span><span class="o">.</span><span class="n">Pipeline</span><span class="p">,</span> <span class="n">ClassifierMixin</span><span class="p">):</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">classes_</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">steps</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">classes_</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">make_classification</span><span class="p">()</span>
+<span class="n">classifier</span> <span class="o">=</span> <span class="n">ClassifierPipeline</span><span class="p">([(</span><span class="s">'earth'</span><span class="p">,</span><span class="n">Earth</span><span class="p">()),(</span><span class="s">'log'</span><span class="p">,</span><span class="n">SGDClassifier</span><span class="p">(</span><span class="n">loss</span><span class="o">=</span><span class="s">'log'</span><span class="p">))])</span>
+<span class="n">model</span> <span class="o">=</span> <span class="n">AdaBoostClassifier</span><span class="p">(</span><span class="n">base_estimator</span><span class="o">=</span><span class="n">classifier</span><span class="p">)</span>
+<span class="n">model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>So that’s how you use AdaBoost with MARS in Python.</p>
+</div>]]></description>
+            <category><![CDATA[ Python ]]></category>
+             <pubDate>Fri, 07 Feb 2014 00:00:00 -0800</pubDate>
+        </item>
+    
         <item>
             <link>http://jcrudy.github.io/blog/html/2013/12/08/introduction_to_iscala.html</link>
             <guid>http://jcrudy.github.io/blog/html/2013/12/08/introduction_to_iscala.html</guid>
@@ -132,7 +205,7 @@
 <p>So IScala is up and running.  There doesn’t yet appear to be any support for displaying plots in the notebook, and it is a little annoying that I have to %update to add new dependencies (which causes the Scala process to restart and all existing objects to be lost from memory).  However, IScala is a new project and these are minor issues.  During the process I discovered something disconcerting about the Scala ecosystem, however.  There is not currently a Scala equivalent of numpy.  That is, there is no basic structure that everyone agrees is the standard backend array type.  Instead, there are several competing packages (of which <a class="reference external" href="http://www.scalanlp.org">breeze</a> is just one) that accomplish this extremely basic function.  I need to decide which one I want to develop on.</p>
 </div>
 </div>]]></description>
-             <pubDate>Sun, 08 Dec 2013 00:00:00 -0500</pubDate>
+             <pubDate>Sun, 08 Dec 2013 00:00:00 -0800</pubDate>
         </item>
     
         <item>
@@ -162,7 +235,7 @@
 </table>
 </div>
 </div>]]></description>
-             <pubDate>Mon, 02 Dec 2013 00:00:00 -0500</pubDate>
+             <pubDate>Mon, 02 Dec 2013 00:00:00 -0800</pubDate>
         </item>
     
     </channel>
