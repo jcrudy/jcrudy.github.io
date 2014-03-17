@@ -11,7 +11,7 @@ import tinkerer.paths
 project = 'A Fistful of Data'
 
 # Change this to the tagline of your blog
-tagline = 'data wrangling and other cowboy stuff'
+tagline = 'data wrangling, rodeo metaphors, and tng references'
 
 # Change this to the description of your blog
 description = 'This blog is pretty okay'
@@ -36,7 +36,7 @@ disqus_shortname = 'jcrudy-blog'
 html_favicon = 'tinkerer.ico'
 
 # Pick another Tinkerer theme or use your own
-html_theme = "local_theme4"
+html_theme = "modern5"
 render_sidebar = True
 
 # Theme-specific options, see docs
