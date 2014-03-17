@@ -29,7 +29,7 @@ So we've assessed predictiveness and generalization for our models, and the best
 An example
 -----------------
 
-To start with, let's look at an extremely simplified example.  First I'm going to simulate a simple regression problem with a lognormal response distribution.
+First I'm going to simulate a simple regression problem with a lognormal response distribution.
 
 .. code:: python
 
@@ -119,9 +119,9 @@ Here is the resulting plot.
 Final thoughts
 --------------
 
-The plot illustrates nicely that simply inverting the original transformation is a very bad idea.  On this data set both the calibration methods stick near the correct (dotted red) curve.  What's nice about this, of course, is that both the calibration methods are purely data driven, and work just as well in situations in which the exact distribution of the data is either not convenient or not known, or even in situations in which the original transformation is unknown.
+The plot illustrates nicely that simply inverting the original transformation (solid red line) is a very bad idea.  On this data set both the calibration methods stick near the correct (dashed red) curve, and I have found them to be effective for real data sets as well.  What's nice about both calibration methods is that they are purely data driven.  They will work just as well in situations in which the exact distribution of the data is either not convenient or not known, or even in situations in which the original transformation is unknown.  Instead of making distributional assumptions and trying to solve integrals, you can just plug in these calibration methods and most likely end up with a better result.
 
-So, how does all this work?  Well, the exact details are beyond the scope of this particular blog entry, but generally speaking SmoothIso works by performing isotonic regression followed by MARS, and SmoothMovingAverage works by training a MARS model on a moving average of the training data.  I encourage you to read the articles and check out my implementations.  I'm putting all the code used in this post, including the calibrators themselves, in a `github repository`_.  I hope you'll try it out.
+So, how does all this work?  Well, the exact details are beyond the scope of this particular blog entry, but generally speaking SmoothIso works by performing isotonic regression followed by MARS, and SmoothMovingAverage works by training a MARS model on a moving average of the training data.  I encourage you to read the articles and check out my implementations.  I'm putting all the code used in this post, including the calibrators themselves, in a `github repository`_.  I hope you'll try it.
 
 .. _github repository: https://github.com/jcrudy/calibrators
 
