@@ -1,4 +1,4 @@
-transformations and consequences
+Transformations and consequences
 ================================
 
 
@@ -26,7 +26,7 @@ Let's say we've got some response :math:`y` and a nonlinear monotonic transforma
 
 So we've assessed predictiveness and generalization for our models, and the best one is :math:`\hat{z}`.  Great.  Now we have a real mess to clean up.  We have a model for :math:`E\left(f\left(y\right)\right)` and we want a model for :math:`E\left(y\right)`.  We've know :math:`f\left(y\right)`, and since it's monotonic we can presumably find the inverse :math:`f^{-1}\left(z\right)=y`.  However, :math:`E\left(f\left(y\right)\right)\ne f\left(E\left(y\right)\right)` in general, so it is also not generally true that :math:`f^{-1}\left(E\left(f\left(y\right)\right)\right) = E\left(y\right)`.  In fact it is usually false.  Super false.  It turns out that this data transformation problem is similar to another problem about which a group of scientists in La Jolla has recently published a few short articles: risk model calibration.  I stumbled upon their publications recently when I was researching the topic of this post :cite:`Jiang2011`:cite:`Jiang2011a`:cite:`Wu2012`.  The problems are essentially identical: given a predictive model with good rank-based performance (area under the ROC curve in the case of classifiers, Spearman's :math:`\rho` or Kendall's :math:`tau` in the case of regression problems with numeric response), find a transformation such that the output of that model accurately predicts the expected value of the quantity of interest.  Generally, a monotonic transformation is desired so that the rank-based performance is preserved, but one of the three methods described by the lab in question actually gives a transformation that is not strictly monotonic.  I don't want to describe the methods in detail here.  The papers I cited are freely available online.  I mostly just want to share a few methods I implemented that are very similar (and were inspired by these scientists' fine work).
 
-an example
+An example
 -----------------
 
 To start with, let's look at an extremely simplified example.  First I'm going to simulate a simple regression problem with a lognormal response distribution.
@@ -116,7 +116,7 @@ Here is the resulting plot.
 	:alt: `Plot of the different calibration methods`
 
 
-final thoughts
+Final thoughts
 --------------
 
 The plot illustrates nicely that simply inverting the original transformation is a very bad idea.  On this data set both the calibration methods stick near the correct (dotted red) curve.  What's nice about this, of course, is that both the calibration methods are purely data driven, and work just as well in situations in which the exact distribution of the data is either not convenient or not known, or even in situations in which the original transformation is unknown.

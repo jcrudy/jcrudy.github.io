@@ -15,7 +15,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <meta name="description" content="This blog is pretty okay">
         <meta name="viewport" content="width=device-width">
-        <title>transformations and consequences &mdash; A Fistful of Data</title>
+        <title>Transformations and consequences &mdash; A fistful of data</title>
             <link rel="stylesheet" href="../../../_static/normalize.css" type="text/css">
             <link rel="stylesheet" href="../../../_static/sphinx.css" type="text/css">
             <link rel="stylesheet" href="../../../_static/main.css" type="text/css">
@@ -28,7 +28,7 @@
         <script>window.jQuery || document.write('<script src="../../../_static/vendor/jquery-1.8.2.min.js"><\/script>')</script>
         <script src="../../../_static/plugins.js"></script>
         <script src="../../../_static/main.js"></script>
-        <link rel="next" title="boosting with MARS" href="../../02/07/boosting_with_mars.html" /><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../rss.html" /><script type="text/javascript">
+        <link rel="next" title="Boosting with MARS" href="../../02/07/boosting_with_mars.html" /><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../rss.html" /><script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
         VERSION:     '1.2.1',
@@ -64,7 +64,7 @@
 
       <div id="container"><header>
             <hgroup>
-              <h1><a href="../../../index.html">A Fistful of Data</a></h1><h2>data wrangling, rodeo metaphors, and tng references</h2></hgroup>
+              <h1><a href="../../../index.html">A fistful of data</a></h1><h2>Data wrangling, rodeo metaphors, and tng references</h2></hgroup>
           </header>
       <nav>
             <ul><li class="quicklink"><div class="rss">
@@ -76,17 +76,17 @@
                   <a href="../../../pages/my_software.html">Software</a>
                 </li>
               <li class="main-nav">
-                  <a href="../../../pages/about.html">About Me</a>
+                  <a href="../../../pages/about.html">About me</a>
                 </li>
               </ul>
           </nav><div class="main-container"><div class="main wrapper clearfix"><article><ul class="related clearfix">
             <li class="left"></li>
-            <li class="right"><a href="../../02/07/boosting_with_mars.html">boosting with MARS</a> &raquo; </li>
+            <li class="right"><a href="../../02/07/boosting_with_mars.html">Boosting with MARS</a> &raquo; </li>
         </ul><div class="timestamp postmeta">
             <span>March 16, 2014</span>
         </div>
     <div class="section" id="transformations-and-consequences">
-<h1>transformations and consequences</h1>
+<h1>Transformations and consequences</h1>
 <blockquote class="epigraph">
 <div><p>He knows she tried to be forgiving, but who can just shrug away a guilty lie,
 a stab in the back? Such a mistake will change a relationship irreversibly,
@@ -98,7 +98,7 @@ even if we have learned from the mistake and would never repeat it.</p>
 <p>Let&#8217;s say we&#8217;ve got some response <span class="math">\(y\)</span> and a nonlinear monotonic transformation <span class="math">\(f\left(\right)\)</span>.  Let&#8217;s have <span class="math">\(z=f\left(y\right)\)</span> and say we have some pretty good predictor <span class="math">\(\hat{z}\)</span> of <span class="math">\(E\left(z\right)\)</span>.  Firstly, what makes this predictor pretty good?  How can we compare it to some other predictor, <span class="math">\(\hat{y}\)</span>, that we built for <span class="math">\(E\left(y\right)\)</span> on the original scale?  It&#8217;s a popular practice to use the coefficient of determination, <span class="math">\(R^2\)</span>, to assess the predictive power of a regression model, but <span class="math">\(R^2\)</span> is very sensitive to nonlinear transformations.  A better idea in this context is to use a rank based measure of predictive power, such as Spearman&#8217;s <span class="math">\(\rho\)</span> or Kendall&#8217;s <span class="math">\(\tau\)</span>.  These metrics will not be influenced by any monotonic transformation.  I also like to compare <span class="math">\(R^2\)</span> between the training set and a reserved testing set for my regression models.  Often I will find extreme overfitting on the original response scale while the model I fit on the transformed response shows good generalization.</p>
 <p>So we&#8217;ve assessed predictiveness and generalization for our models, and the best one is <span class="math">\(\hat{z}\)</span>.  Great.  Now we have a real mess to clean up.  We have a model for <span class="math">\(E\left(f\left(y\right)\right)\)</span> and we want a model for <span class="math">\(E\left(y\right)\)</span>.  We&#8217;ve know <span class="math">\(f\left(y\right)\)</span>, and since it&#8217;s monotonic we can presumably find the inverse <span class="math">\(f^{-1}\left(z\right)=y\)</span>.  However, <span class="math">\(E\left(f\left(y\right)\right)\ne f\left(E\left(y\right)\right)\)</span> in general, so it is also not generally true that <span class="math">\(f^{-1}\left(E\left(f\left(y\right)\right)\right) = E\left(y\right)\)</span>.  In fact it is usually false.  Super false.  It turns out that this data transformation problem is similar to another problem about which a group of scientists in La Jolla has recently published a few short articles: risk model calibration.  I stumbled upon their publications recently when I was researching the topic of this post <a class="reference internal" href="#jiang2011">[1]</a><a class="reference internal" href="#jiang2011a">[2]</a><a class="reference internal" href="#wu2012">[3]</a>.  The problems are essentially identical: given a predictive model with good rank-based performance (area under the ROC curve in the case of classifiers, Spearman&#8217;s <span class="math">\(\rho\)</span> or Kendall&#8217;s <span class="math">\(tau\)</span> in the case of regression problems with numeric response), find a transformation such that the output of that model accurately predicts the expected value of the quantity of interest.  Generally, a monotonic transformation is desired so that the rank-based performance is preserved, but one of the three methods described by the lab in question actually gives a transformation that is not strictly monotonic.  I don&#8217;t want to describe the methods in detail here.  The papers I cited are freely available online.  I mostly just want to share a few methods I implemented that are very similar (and were inspired by these scientists&#8217; fine work).</p>
 <div class="section" id="an-example">
-<h2>an example</h2>
+<h2>An example</h2>
 <p>To start with, let&#8217;s look at an extremely simplified example.  First I&#8217;m going to simulate a simple regression problem with a lognormal response distribution.</p>
 <div class="code python highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span>
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span>
@@ -177,7 +177,7 @@ even if we have learned from the mistake and would never repeat it.</p>
 </div>
 </div>
 <div class="section" id="final-thoughts">
-<h2>final thoughts</h2>
+<h2>Final thoughts</h2>
 <p>The plot illustrates nicely that simply inverting the original transformation is a very bad idea.  On this data set both the calibration methods stick near the correct (dotted red) curve.  What&#8217;s nice about this, of course, is that both the calibration methods are purely data driven, and work just as well in situations in which the exact distribution of the data is either not convenient or not known, or even in situations in which the original transformation is unknown.</p>
 <p>So, how does all this work?  Well, the exact details are beyond the scope of this particular blog entry, but generally speaking SmoothIso works by performing isotonic regression followed by MARS, and SmoothMovingAverage works by training a MARS model on a moving average of the training data.  I encourage you to read the articles and check out my implementations.  I&#8217;m putting all the code used in this post, including the calibrators themselves, in a <a class="reference external" href="https://github.com/jcrudy/calibrators">github repository</a>.  I hope you&#8217;ll try it out.</p>
 <p id="bibtex-bibliography-2014/03/16/denorm-0"><table class="docutils citation" frame="void" id="jiang2011" rules="none">
@@ -219,17 +219,17 @@ even if we have learned from the mistake and would never repeat it.</p>
         </div>
     <div id="disqus_thread"></div><script type="text/javascript">    var disqus_shortname = "jcrudy-blog";    var disqus_identifier = "2014/03/16/denorm";    disqus_thread();</script><noscript>Please enable JavaScript to view the    <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><ul class="related clearfix">
             <li class="left"></li>
-            <li class="right"><a href="../../02/07/boosting_with_mars.html">boosting with MARS</a> &raquo; </li>
+            <li class="right"><a href="../../02/07/boosting_with_mars.html">Boosting with MARS</a> &raquo; </li>
         </ul></article><aside class="sidebar"><section><div class="widget">
     <h1>Recent Posts</h1>
     <ul><li>
-            <a href="#">transformations and consequences</a>
+            <a href="#">Transformations and consequences</a>
         </li><li>
-            <a href="../../02/07/boosting_with_mars.html">boosting with MARS</a>
+            <a href="../../02/07/boosting_with_mars.html">Boosting with MARS</a>
         </li><li>
-            <a href="../../../2013/12/08/introduction_to_iscala.html">introduction to IScala</a>
+            <a href="../../../2013/12/08/introduction_to_iscala.html">Introduction to IScala</a>
         </li><li>
-            <a href="../../../2013/12/02/blogstart.html">blogstart</a>
+            <a href="../../../2013/12/02/blogstart.html">Blogstart</a>
         </li></ul>
 </div>
 </section><section><div class="widget" id="searchbox">

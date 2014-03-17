@@ -1,4 +1,4 @@
-boosting with MARS
+Boosting with MARS
 ==================
 
 

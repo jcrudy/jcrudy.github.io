@@ -1,4 +1,4 @@
-introduction to IScala
+Introduction to IScala
 ======================
 
 
@@ -16,7 +16,7 @@ I guess what I'm saying is I want to branch out a little.  I'd like to find a la
 So I'm exploring the Scala ecosystem and learning the language (which so far I think is fantastic).  My goal is to do some data analyses and implement one or two non-trivial algorithms in Scala.  But one step at a time.  Today I want to share IScala_, which is basically just IPython with a Scala backend.  Although I actually rarely use IPython, I know a lot of people do and I suspect that Scala adoption will require the existence of a useful IPython replacement.
 
 
-installing
+Installing
 ----------
 
 The IScala readme file lists several installation options.  The one that worked for me was as follows.  First, download the `latest tarball`_ and unpack it somewhere.  I put it directly in my home directory.  Then create a scala profile for ipython:
@@ -58,7 +58,7 @@ After you get this working, with $ISCALA_PATH replaced by the path to wherever y
 or similarly for console or qtconsole.  
 
 
-taking it for a spin
+Taking it for a spin
 --------------------
 
 I'm going to try generating a random matrix with a standard normal distribution.  The first thing I'll need to do is import breeze.  My first attempt failed.
@@ -169,7 +169,7 @@ That worked!  I can now generate my random matrix like this:
 
 
 
-final thoughts
+Final thoughts
 --------------
 
 So IScala is up and running.  There doesn't yet appear to be any support for displaying plots in the notebook, and it is a little annoying that I have to %update to add new dependencies (which causes the Scala process to restart and all existing objects to be lost from memory).  However, IScala is a new project and these are minor issues.  During the process I discovered something disconcerting about the Scala ecosystem, however.  There is not currently a Scala equivalent of numpy.  That is, there is no basic structure that everyone agrees is the standard backend array type.  Instead, there are several competing packages (of which breeze_ is just one) that accomplish this extremely basic function.  I need to decide which one I want to develop on.
