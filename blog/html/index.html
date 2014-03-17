@@ -82,8 +82,8 @@
           </nav><div class="main-container"><div class="main wrapper clearfix"><article><div class="timestamp postmeta">
             <span>March 16, 2014</span>
         </div>
-        <div class="section" id="denorm">
-<h1><a href="2014/03/16/denorm.html">denorm</a></h1>
+        <div class="section" id="transformations-and-consequences">
+<h1><a href="2014/03/16/denorm.html">transformations and consequences</a></h1>
 <blockquote class="epigraph">
 <div><p>He knows she tried to be forgiving, but who can just shrug away a guilty lie,
 a stab in the back? Such a mistake will change a relationship irreversibly,
@@ -202,15 +202,23 @@ even if we have learned from the mistake and would never repeat it.</p>
         <div class="author">
             <span>Posted by Jason Rudy</span>
         </div>
-        
-        
+        <div class="categories">
+            <span>
+                Filed under:
+                <a href="categories/python.html">python</a>, <a href="categories/statistics.html">statistics</a></span>
+        </div>
+        <div class="tags">
+            <span>
+                Tags:
+                <a href="tags/transformation.html">transformation</a>, <a href="tags/calibration.html">calibration</a></span>
+        </div>
         <div class="comments">
             <a href="http://jcrudy.github.io/blog/html/2014/03/16/denorm.html#disqus_thread" data-disqus-identifier="2014/03/16/denorm">Leave a comment</a>
         </div></div><div class="separator post_separator"></div><div class="timestamp postmeta">
             <span>February 07, 2014</span>
         </div>
         <div class="section" id="boosting-with-mars">
-<h1><a href="2014/02/07/boosting_with_mars.html">Boosting with MARS</a></h1>
+<h1><a href="2014/02/07/boosting_with_mars.html">boosting with MARS</a></h1>
 <p>Someone wrote me a few months ago asking for advice.  He was an R user who wanted to combine the adaboost algorithm with MARS and was starting to look outside the R community.  As a recovering (and occasionally relapsing) R user myself, I was only too happy to look into the matter.  As it turns out, it’s actually not that hard to do with a combination of scikit-learn and py-earth.  I now recount the adventure in detail.</p>
 <p>Let it be known that this fine community member was interested in MARS not for regression, as is its usual role, but for classification.  This first challenge is easily accomplished using the Pipeline class, as follows.</p>
 <div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
@@ -290,12 +298,12 @@ even if we have learned from the mistake and would never repeat it.</p>
             <span>December 08, 2013</span>
         </div>
         <div class="section" id="introduction-to-iscala">
-<h1><a href="2013/12/08/introduction_to_iscala.html">Introduction to IScala</a></h1>
+<h1><a href="2013/12/08/introduction_to_iscala.html">introduction to IScala</a></h1>
 <p>Python is an amazingly productive glue language.  It’s become popular among data scientists over the past several years, partially because of great libraries like numpy, scipy, pandas, scikit-learn, statsmodels, etc., and partially because so much of data science consists simply of gluing things together.  There is a part of my life, though, that consists of actually implementing machine learning algorithms.  Python does not make that part easy.  In order to write efficient numerical code for Python, you need to move the majority of the computation out of Python and into statically typed, compiled code.  The best solution I’ve found is Cython, which compiles a Python-like language to C while taking care of the Python C api for you.  I wrote py-earth in Cython and am fairly happy with the result.  However, Cython is still a (really fantastic) hack.  Getting good performance out of Cython code requires knowledge of both C and the internals of Python, and most of the good stuff about Python - passing around functions, object-oriented design, readability - is lost when you start to really optimize.  If you want to combine concurrency with objects, you actually have to start passing pointers around.</p>
 <p>I guess what I’m saying is I want to branch out a little.  I’d like to find a language where I can be productive both as a scientific user and as a scientific developer, something modern, new but not too new, mainstream but with just a bit of an edge.  Tall.  Anyway, it seems like there are two new languages out there vying for my affection.  I chose Scala over Julia for two reasons.  Firstly, Scala is a general purpose programming language.  While statisticians and academic scientists are very happy to use single purpose tools like R to do their analyses, data scientists need the ability to actually write software and integrate their analyses into larger projects.  Secondly, Scala is implemented on the JVM and compatible with Java.  That means I can use any Java library from within Scala and use Scala to write map-reduce queries for an Hadoop cluster without using the streaming interface.</p>
 <p>So I’m exploring the Scala ecosystem and learning the language (which so far I think is fantastic).  My goal is to do some data analyses and implement one or two non-trivial algorithms in Scala.  But one step at a time.  Today I want to share <a class="reference external" href="https://github.com/mattpap/IScala">IScala</a>, which is basically just IPython with a Scala backend.  Although I actually rarely use IPython, I know a lot of people do and I suspect that Scala adoption will require the existence of a useful IPython replacement.</p>
 <div class="section" id="installing">
-<h2>Installing</h2>
+<h2>installing</h2>
 <p>The IScala readme file lists several installation options.  The one that worked for me was as follows.  First, download the <a class="reference external" href="https://github.com/mattpap/IScala/releases">latest tarball</a> and unpack it somewhere.  I put it directly in my home directory.  Then create a scala profile for ipython:</p>
 <div class="highlight-none"><div class="highlight"><pre>$ipython profile create scala
 [ProfileCreate] Generating default config file: u'/Users/jason/.ipython/profile_scala/ipython_config.py'
@@ -323,7 +331,7 @@ even if we have learned from the mistake and would never repeat it.</p>
 <p>or similarly for console or qtconsole.</p>
 </div>
 <div class="section" id="taking-it-for-a-spin">
-<h2>Taking it for a spin</h2>
+<h2>taking it for a spin</h2>
 <p>I’m going to try generating a random matrix with a standard normal distribution.  The first thing I’ll need to do is import breeze.  My first attempt failed.</p>
 <div class="iscala container">
 <div class="code scala highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">breeze.linalg._</span>
@@ -406,7 +414,7 @@ even if we have learned from the mistake and would never repeat it.</p>
 </div>
 </div>
 <div class="section" id="final-thoughts">
-<h2>Final thoughts</h2>
+<h2>final thoughts</h2>
 <p>So IScala is up and running.  There doesn’t yet appear to be any support for displaying plots in the notebook, and it is a little annoying that I have to %update to add new dependencies (which causes the Scala process to restart and all existing objects to be lost from memory).  However, IScala is a new project and these are minor issues.  During the process I discovered something disconcerting about the Scala ecosystem, however.  There is not currently a Scala equivalent of numpy.  That is, there is no basic structure that everyone agrees is the standard backend array type.  Instead, there are several competing packages (of which <a class="reference external" href="http://www.scalanlp.org">breeze</a> is just one) that accomplish this extremely basic function.  I need to decide which one I want to develop on.</p>
 </div>
 </div>
@@ -422,10 +430,10 @@ even if we have learned from the mistake and would never repeat it.</p>
             <span>December 02, 2013</span>
         </div>
         <div class="section" id="blogstart">
-<h1><a href="2013/12/02/blogstart.html">Blogstart</a></h1>
+<h1><a href="2013/12/02/blogstart.html">blogstart</a></h1>
 <p>Once in a great while a new blog is born, and today these rusty tubes are graced with a sparkling new presence.  It’s a little rough right now, but greatness can grow from meek beginnings.  Let us take a moment to remember some of the great weblogs of the past, whose unfathomable heights this humble site may hope one day to spy on the horizon.  <a class="reference external" href="http://jakevdp.github.io">Pythonic Perambulations</a>, <a class="reference external" href="http://twiecki.github.io">While My MCMC Gently Samples</a>, and all the rest, may I follow in your sizable footsteps.  This blog will be much in the spirit of these gentle giants.  It will concern my work and particularly my Python code.  It will contain short pieces of opinion, medium length demonstrations of technology, and longer analyses of data.  It will not be limited to Python or even to programming and statistics, but will tend to concern those topics more than any other.  At least that is my intention.</p>
 <div class="section" id="blog-rules">
-<h2>Blog Rules <a class="footnote-reference" href="#f1" id="id1">[1]</a></h2>
+<h2>blog rules <a class="footnote-reference" href="#f1" id="id1">[1]</a></h2>
 <p>Every blog needs rules.  Here are some.</p>
 <ol class="arabic simple">
 <li>Trust no one.</li>
@@ -434,7 +442,7 @@ even if we have learned from the mistake and would never repeat it.</p>
 </ol>
 </div>
 <div class="section" id="blog-implementation">
-<h2>Blog Implementation</h2>
+<h2>blog implementation</h2>
 <p>This blog, at least at the moment, is constructed using the <a class="reference external" href="http://tinkerer.me">Tinkerer</a> static blogging framework.  Why Tinkerer you ask?  When choosing a static blogging framework I considered the following options: Octopress, Jekyll, Hyde, Pelican, and Tinkerer.  I ruled out Octopress and Jekyll easily enough.  Although they’re both popular, they’re not Python and it would therefore be hard for me to read and understand the source code should the unthinkable occur.  Of the three remaining, I chose Tinkerer because it is based on Sphinx.  Sphinx is a mature and well supported Python tool for generating documentation.  Its main selling points for me are the easy support for math, syntax-highlighted code, bibtex, footnotes, and basically every other imaginable feature of a document via an impressive collection of plugins.  The downside of Tinkerer is that its relatively small userbase has produced very few nice looking themes.  However, I’ve decided theming is a secondary consideration for now.  Perhaps I can help to remedy the situation in the near future.</p>
 <table class="docutils footnote" frame="void" id="f1" rules="none">
 <colgroup><col class="label"/><col/></colgroup>
@@ -457,13 +465,13 @@ even if we have learned from the mistake and would never repeat it.</p>
     </div></article><aside class="sidebar"><section><div class="widget">
     <h1>Recent Posts</h1>
     <ul><li>
-            <a href="2014/03/16/denorm.html">denorm</a>
+            <a href="2014/03/16/denorm.html">transformations and consequences</a>
         </li><li>
-            <a href="2014/02/07/boosting_with_mars.html">Boosting with MARS</a>
+            <a href="2014/02/07/boosting_with_mars.html">boosting with MARS</a>
         </li><li>
-            <a href="2013/12/08/introduction_to_iscala.html">Introduction to IScala</a>
+            <a href="2013/12/08/introduction_to_iscala.html">introduction to IScala</a>
         </li><li>
-            <a href="2013/12/02/blogstart.html">Blogstart</a>
+            <a href="2013/12/02/blogstart.html">blogstart</a>
         </li></ul>
 </div>
 </section><section><div class="widget" id="searchbox">

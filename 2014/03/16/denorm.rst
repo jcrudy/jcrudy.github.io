@@ -1,11 +1,11 @@
-denorm
-======
+transformations and consequences
+================================
 
 
 
 .. author:: default
-.. categories:: none
-.. tags:: none
+.. categories:: python, statistics
+.. tags:: transformation, calibration
 .. comments::
 
 

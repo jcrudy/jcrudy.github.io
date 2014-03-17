@@ -15,7 +15,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <meta name="description" content="This blog is pretty okay">
         <meta name="viewport" content="width=device-width">
-        <title>Introduction to IScala &mdash; A Fistful of Data</title>
+        <title>introduction to IScala &mdash; A Fistful of Data</title>
             <link rel="stylesheet" href="../../../_static/normalize.css" type="text/css">
             <link rel="stylesheet" href="../../../_static/sphinx.css" type="text/css">
             <link rel="stylesheet" href="../../../_static/main.css" type="text/css">
@@ -28,7 +28,7 @@
         <script>window.jQuery || document.write('<script src="../../../_static/vendor/jquery-1.8.2.min.js"><\/script>')</script>
         <script src="../../../_static/plugins.js"></script>
         <script src="../../../_static/main.js"></script>
-        <link rel="next" title="Blogstart" href="../02/blogstart.html" /><link rel="prev" title="Boosting with MARS" href="../../../2014/02/07/boosting_with_mars.html" /><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../rss.html" /><script type="text/javascript">
+        <link rel="next" title="blogstart" href="../02/blogstart.html" /><link rel="prev" title="boosting with MARS" href="../../../2014/02/07/boosting_with_mars.html" /><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../rss.html" /><script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
         VERSION:     '1.2.1',
@@ -80,18 +80,18 @@
                 </li>
               </ul>
           </nav><div class="main-container"><div class="main wrapper clearfix"><article><ul class="related clearfix">
-            <li class="left"> &laquo; <a href="../../../2014/02/07/boosting_with_mars.html">Boosting with MARS</a></li>
-            <li class="right"><a href="../02/blogstart.html">Blogstart</a> &raquo; </li>
+            <li class="left"> &laquo; <a href="../../../2014/02/07/boosting_with_mars.html">boosting with MARS</a></li>
+            <li class="right"><a href="../02/blogstart.html">blogstart</a> &raquo; </li>
         </ul><div class="timestamp postmeta">
             <span>December 08, 2013</span>
         </div>
     <div class="section" id="introduction-to-iscala">
-<h1>Introduction to IScala</h1>
+<h1>introduction to IScala</h1>
 <p>Python is an amazingly productive glue language.  It&#8217;s become popular among data scientists over the past several years, partially because of great libraries like numpy, scipy, pandas, scikit-learn, statsmodels, etc., and partially because so much of data science consists simply of gluing things together.  There is a part of my life, though, that consists of actually implementing machine learning algorithms.  Python does not make that part easy.  In order to write efficient numerical code for Python, you need to move the majority of the computation out of Python and into statically typed, compiled code.  The best solution I&#8217;ve found is Cython, which compiles a Python-like language to C while taking care of the Python C api for you.  I wrote py-earth in Cython and am fairly happy with the result.  However, Cython is still a (really fantastic) hack.  Getting good performance out of Cython code requires knowledge of both C and the internals of Python, and most of the good stuff about Python - passing around functions, object-oriented design, readability - is lost when you start to really optimize.  If you want to combine concurrency with objects, you actually have to start passing pointers around.</p>
 <p>I guess what I&#8217;m saying is I want to branch out a little.  I&#8217;d like to find a language where I can be productive both as a scientific user and as a scientific developer, something modern, new but not too new, mainstream but with just a bit of an edge.  Tall.  Anyway, it seems like there are two new languages out there vying for my affection.  I chose Scala over Julia for two reasons.  Firstly, Scala is a general purpose programming language.  While statisticians and academic scientists are very happy to use single purpose tools like R to do their analyses, data scientists need the ability to actually write software and integrate their analyses into larger projects.  Secondly, Scala is implemented on the JVM and compatible with Java.  That means I can use any Java library from within Scala and use Scala to write map-reduce queries for an Hadoop cluster without using the streaming interface.</p>
 <p>So I&#8217;m exploring the Scala ecosystem and learning the language (which so far I think is fantastic).  My goal is to do some data analyses and implement one or two non-trivial algorithms in Scala.  But one step at a time.  Today I want to share <a class="reference external" href="https://github.com/mattpap/IScala">IScala</a>, which is basically just IPython with a Scala backend.  Although I actually rarely use IPython, I know a lot of people do and I suspect that Scala adoption will require the existence of a useful IPython replacement.</p>
 <div class="section" id="installing">
-<h2>Installing</h2>
+<h2>installing</h2>
 <p>The IScala readme file lists several installation options.  The one that worked for me was as follows.  First, download the <a class="reference external" href="https://github.com/mattpap/IScala/releases">latest tarball</a> and unpack it somewhere.  I put it directly in my home directory.  Then create a scala profile for ipython:</p>
 <div class="highlight-none"><div class="highlight"><pre>$ipython profile create scala
 [ProfileCreate] Generating default config file: u&#39;/Users/jason/.ipython/profile_scala/ipython_config.py&#39;
@@ -119,7 +119,7 @@
 <p>or similarly for console or qtconsole.</p>
 </div>
 <div class="section" id="taking-it-for-a-spin">
-<h2>Taking it for a spin</h2>
+<h2>taking it for a spin</h2>
 <p>I&#8217;m going to try generating a random matrix with a standard normal distribution.  The first thing I&#8217;ll need to do is import breeze.  My first attempt failed.</p>
 <div class="iscala container">
 <div class="code scala highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">breeze.linalg._</span>
@@ -202,7 +202,7 @@
 </div>
 </div>
 <div class="section" id="final-thoughts">
-<h2>Final thoughts</h2>
+<h2>final thoughts</h2>
 <p>So IScala is up and running.  There doesn&#8217;t yet appear to be any support for displaying plots in the notebook, and it is a little annoying that I have to %update to add new dependencies (which causes the Scala process to restart and all existing objects to be lost from memory).  However, IScala is a new project and these are minor issues.  During the process I discovered something disconcerting about the Scala ecosystem, however.  There is not currently a Scala equivalent of numpy.  That is, there is no basic structure that everyone agrees is the standard backend array type.  Instead, there are several competing packages (of which <a class="reference external" href="http://www.scalanlp.org/">breeze</a> is just one) that accomplish this extremely basic function.  I need to decide which one I want to develop on.</p>
 </div>
 </div>
@@ -215,18 +215,18 @@
         
         </div>
     <div id="disqus_thread"></div><script type="text/javascript">    var disqus_shortname = "jcrudy-blog";    var disqus_identifier = "2013/12/08/introduction_to_iscala";    disqus_thread();</script><noscript>Please enable JavaScript to view the    <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><ul class="related clearfix">
-            <li class="left"> &laquo; <a href="../../../2014/02/07/boosting_with_mars.html">Boosting with MARS</a></li>
-            <li class="right"><a href="../02/blogstart.html">Blogstart</a> &raquo; </li>
+            <li class="left"> &laquo; <a href="../../../2014/02/07/boosting_with_mars.html">boosting with MARS</a></li>
+            <li class="right"><a href="../02/blogstart.html">blogstart</a> &raquo; </li>
         </ul></article><aside class="sidebar"><section><div class="widget">
     <h1>Recent Posts</h1>
     <ul><li>
-            <a href="../../../2014/03/16/denorm.html">denorm</a>
+            <a href="../../../2014/03/16/denorm.html">transformations and consequences</a>
         </li><li>
-            <a href="../../../2014/02/07/boosting_with_mars.html">Boosting with MARS</a>
+            <a href="../../../2014/02/07/boosting_with_mars.html">boosting with MARS</a>
         </li><li>
-            <a href="#">Introduction to IScala</a>
+            <a href="#">introduction to IScala</a>
         </li><li>
-            <a href="../02/blogstart.html">Blogstart</a>
+            <a href="../02/blogstart.html">blogstart</a>
         </li></ul>
 </div>
 </section><section><div class="widget" id="searchbox">

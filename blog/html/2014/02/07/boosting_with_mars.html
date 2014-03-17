@@ -15,7 +15,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <meta name="description" content="This blog is pretty okay">
         <meta name="viewport" content="width=device-width">
-        <title>Boosting with MARS &mdash; A Fistful of Data</title>
+        <title>boosting with MARS &mdash; A Fistful of Data</title>
             <link rel="stylesheet" href="../../../_static/normalize.css" type="text/css">
             <link rel="stylesheet" href="../../../_static/sphinx.css" type="text/css">
             <link rel="stylesheet" href="../../../_static/main.css" type="text/css">
@@ -28,7 +28,7 @@
         <script>window.jQuery || document.write('<script src="../../../_static/vendor/jquery-1.8.2.min.js"><\/script>')</script>
         <script src="../../../_static/plugins.js"></script>
         <script src="../../../_static/main.js"></script>
-        <link rel="next" title="Introduction to IScala" href="../../../2013/12/08/introduction_to_iscala.html" /><link rel="prev" title="denorm" href="../../03/16/denorm.html" /><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../rss.html" /><script type="text/javascript">
+        <link rel="next" title="introduction to IScala" href="../../../2013/12/08/introduction_to_iscala.html" /><link rel="prev" title="transformations and consequences" href="../../03/16/denorm.html" /><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../rss.html" /><script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
         VERSION:     '1.2.1',
@@ -80,13 +80,13 @@
                 </li>
               </ul>
           </nav><div class="main-container"><div class="main wrapper clearfix"><article><ul class="related clearfix">
-            <li class="left"> &laquo; <a href="../../03/16/denorm.html">denorm</a></li>
-            <li class="right"><a href="../../../2013/12/08/introduction_to_iscala.html">Introduction to IScala</a> &raquo; </li>
+            <li class="left"> &laquo; <a href="../../03/16/denorm.html">transformations and consequences</a></li>
+            <li class="right"><a href="../../../2013/12/08/introduction_to_iscala.html">introduction to IScala</a> &raquo; </li>
         </ul><div class="timestamp postmeta">
             <span>February 07, 2014</span>
         </div>
     <div class="section" id="boosting-with-mars">
-<h1>Boosting with MARS</h1>
+<h1>boosting with MARS</h1>
 <p>Someone wrote me a few months ago asking for advice.  He was an R user who wanted to combine the adaboost algorithm with MARS and was starting to look outside the R community.  As a recovering (and occasionally relapsing) R user myself, I was only too happy to look into the matter.  As it turns out, it&#8217;s actually not that hard to do with a combination of scikit-learn and py-earth.  I now recount the adventure in detail.</p>
 <p>Let it be known that this fine community member was interested in MARS not for regression, as is its usual role, but for classification.  This first challenge is easily accomplished using the Pipeline class, as follows.</p>
 <div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
@@ -163,18 +163,18 @@
         
         </div>
     <div id="disqus_thread"></div><script type="text/javascript">    var disqus_shortname = "jcrudy-blog";    var disqus_identifier = "2014/02/07/boosting_with_mars";    disqus_thread();</script><noscript>Please enable JavaScript to view the    <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><ul class="related clearfix">
-            <li class="left"> &laquo; <a href="../../03/16/denorm.html">denorm</a></li>
-            <li class="right"><a href="../../../2013/12/08/introduction_to_iscala.html">Introduction to IScala</a> &raquo; </li>
+            <li class="left"> &laquo; <a href="../../03/16/denorm.html">transformations and consequences</a></li>
+            <li class="right"><a href="../../../2013/12/08/introduction_to_iscala.html">introduction to IScala</a> &raquo; </li>
         </ul></article><aside class="sidebar"><section><div class="widget">
     <h1>Recent Posts</h1>
     <ul><li>
-            <a href="../../03/16/denorm.html">denorm</a>
+            <a href="../../03/16/denorm.html">transformations and consequences</a>
         </li><li>
-            <a href="#">Boosting with MARS</a>
+            <a href="#">boosting with MARS</a>
         </li><li>
-            <a href="../../../2013/12/08/introduction_to_iscala.html">Introduction to IScala</a>
+            <a href="../../../2013/12/08/introduction_to_iscala.html">introduction to IScala</a>
         </li><li>
-            <a href="../../../2013/12/02/blogstart.html">Blogstart</a>
+            <a href="../../../2013/12/02/blogstart.html">blogstart</a>
         </li></ul>
 </div>
 </section><section><div class="widget" id="searchbox">
