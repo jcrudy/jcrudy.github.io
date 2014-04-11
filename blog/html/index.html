@@ -87,10 +87,10 @@
 <p>When you develop new methods, it’s important to test them on simulated data.  Recently I’ve been developing some survival analysis methods and found myself needing to simulate survival data sets with arbitrary hazard functions.  I searched and searched and couldn’t find a good way to do it, so I thought I’d share my solution here.</p>
 <div class="section" id="still-alive">
 <h2>Still alive?</h2>
-<p>Survival analysis is the part of statistics that deals with waiting.  It is named for that special kind of waiting in which we all must participate, but it is applicable to any kind of waiting for something to happen.  I like to use it at the airport, for example.  The core object in survival analysis is the suvival function, which gives the probability that you will still be waiting (e.g., still alive) as a function of time.  The hazard function is the time derivative of the negative logarithm of the survival function,</p>
+<p>Survival analysis is the part of statistics that deals with waiting.  It is named for that special kind of waiting in which we all must participate, but it is applicable to any kind of waiting for something to happen.  I like to use it at the airport, for example.  The core object in survival analysis is the suvival function, which gives the probability that you will still be waiting (e.g., still alive) as a function of time.  The hazard function is the negative time derivative of the survival function normalized by the survival function,</p>
 <div class="math">
-\[h\left(t\right)=-\frac{d}{dt}\log\left(S\left(t\right)\right)\]</div>
-<p>or, more intuitively, it is the instantaneous rate at which events (such as death) occur.</p>
+\[h\left(t\right)=-\frac{1}{S\left(t\right)}\frac{d}{dt}S\left(t\right)\]</div>
+<p>or, more intuitively, it is the instantaneous rate at which events (such as death) occur among the remaining survivors.</p>
 <p>Sampling from the hazard function means drawing random numbers from the distribution that that hazard function implies.  Fortunately, the survival function is related to the CDF by</p>
 <div class="math">
 \[F\left(t\right)=1-S\left(t\right)\]</div>

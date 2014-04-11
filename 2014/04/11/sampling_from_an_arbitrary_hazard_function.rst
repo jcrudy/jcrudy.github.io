@@ -14,14 +14,14 @@ When you develop new methods, it's important to test them on simulated data.  Re
 Still alive?
 ------------
 
-Survival analysis is the part of statistics that deals with waiting.  It is named for that special kind of waiting in which we all must participate, but it is applicable to any kind of waiting for something to happen.  I like to use it at the airport, for example.  The core object in survival analysis is the suvival function, which gives the probability that you will still be waiting (e.g., still alive) as a function of time.  The hazard function is the time derivative of the negative logarithm of the survival function,
+Survival analysis is the part of statistics that deals with waiting.  It is named for that special kind of waiting in which we all must participate, but it is applicable to any kind of waiting for something to happen.  I like to use it at the airport, for example.  The core object in survival analysis is the suvival function, which gives the probability that you will still be waiting (e.g., still alive) as a function of time.  The hazard function is the negative time derivative of the survival function normalized by the survival function,
 
 .. math::
 
-    h\left(t\right)=-\frac{d}{dt}\log\left(S\left(t\right)\right)
+    h\left(t\right)=-\frac{1}{S\left(t\right)}\frac{d}{dt}S\left(t\right)
 
 
-or, more intuitively, it is the instantaneous rate at which events (such as death) occur.
+or, more intuitively, it is the instantaneous rate at which events (such as death) occur among the remaining survivors.
 
 Sampling from the hazard function means drawing random numbers from the distribution that that hazard function implies.  Fortunately, the survival function is related to the CDF by
 
