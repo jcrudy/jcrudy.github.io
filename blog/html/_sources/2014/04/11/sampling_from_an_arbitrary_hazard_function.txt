@@ -1,5 +1,5 @@
-Sampling from an arbitrary hazard function
-==========================================
+How to sample from a hazard function
+====================================
 
 
 
