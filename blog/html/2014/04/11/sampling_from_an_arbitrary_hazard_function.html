@@ -1,0 +1,245 @@
+<!DOCTYPE html><!--[if lt IE 7]>      <html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:og="http://ogp.me/ns#"
+    xmlns:fb="https://www.facebook.com/2008/fbml" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:og="http://ogp.me/ns#"
+    xmlns:fb="https://www.facebook.com/2008/fbml" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:og="http://ogp.me/ns#"
+    xmlns:fb="https://www.facebook.com/2008/fbml" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:og="http://ogp.me/ns#"
+    xmlns:fb="https://www.facebook.com/2008/fbml" class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="description" content="This blog is pretty okay">
+        <meta name="viewport" content="width=device-width">
+        <title>Sampling from an arbitrary hazard function &mdash; A fistful of data</title>
+            <link rel="stylesheet" href="../../../_static/normalize.css" type="text/css">
+            <link rel="stylesheet" href="../../../_static/sphinx.css" type="text/css">
+            <link rel="stylesheet" href="../../../_static/main.css" type="text/css">
+            <link rel="stylesheet" href="../../../_static/modern5.css" type="text/css">
+            <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+            <link rel="stylesheet" href="../../../_static/webfont.css" type="text/css">
+        <link rel="shortcut icon" href="../../../_static/tinkerer.ico" /><!-- Load modernizr and JQuery -->
+        <script src="../../../_static/vendor/modernizr-2.6.2.min.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+        <script>window.jQuery || document.write('<script src="../../../_static/vendor/jquery-1.8.2.min.js"><\/script>')</script>
+        <script src="../../../_static/plugins.js"></script>
+        <script src="../../../_static/main.js"></script>
+        <link rel="next" title="Transformations and consequences" href="../../03/16/denorm.html" /><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../rss.html" /><script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../../',
+        VERSION:     '1.2.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script><script type="text/javascript" src="../../../_static/underscore.js"></script><script type="text/javascript" src="../../../_static/doctools.js"></script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><script type="text/javascript" src="../../../_static/disqus.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Adjusts document height if sidebar is taller
+            var documentwrapper = document.getElementsByTagName("article")[0];
+            var sidebar = document.getElementsByClassName("sidebar")[0];
+
+            if (sidebar.offsetHeight > documentwrapper.offsetHeight)
+            {
+                var mainwrapper = document.getElementsByClassName("main")[0];
+                documentwrapper.style.minHeight = mainwrapper.offsetHeight + "px";
+            }
+
+            // Scroll to content if on small screen
+            if (screen.width < 480)
+            {
+                $(document).scrollTop(document.getElementsByTagName("article")[0].offsetTop - 44);
+            }
+        });
+    </script></head>
+    <body>
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
+
+      <div id="container"><header>
+            <hgroup>
+              <h1><a href="../../../index.html">A fistful of data</a></h1><h2>Data wrangling, rodeo metaphors, and tng references</h2></hgroup>
+          </header>
+      <nav>
+            <ul><li class="quicklink"><div class="rss">
+        <a href="../../../rss.html" title="Subscribe via RSS"><span class="webfont">B</span></a>
+    </div></li><li class="main-nav">
+                  <a href="../../../index.html">Home</a>
+                </li>
+              <li class="main-nav">
+                  <a href="../../../pages/my_software.html">Software</a>
+                </li>
+              <li class="main-nav">
+                  <a href="../../../pages/about.html">About me</a>
+                </li>
+              </ul>
+          </nav><div class="main-container"><div class="main wrapper clearfix"><article><ul class="related clearfix">
+            <li class="left"></li>
+            <li class="right"><a href="../../03/16/denorm.html">Transformations and consequences</a> &raquo; </li>
+        </ul><div class="timestamp postmeta">
+            <span>April 11, 2014</span>
+        </div>
+    <div class="section" id="sampling-from-an-arbitrary-hazard-function">
+<h1>Sampling from an arbitrary hazard function</h1>
+<p>When you develop new methods, it&#8217;s important to test them on simulated data.  Recently I&#8217;ve been developing some survival analysis methods and found myself needing to simulate survival data sets with arbitrary hazard functions.  I searched and searched and couldn&#8217;t find a good way to do it, so I thought I&#8217;d share my solution here.</p>
+<div class="section" id="still-alive">
+<h2>Still alive?</h2>
+<p>Survival analysis is the part of statistics that deals with waiting.  It is named for that special kind of waiting in which we all must participate, but it is applicable to any kind of waiting for something to happen.  I like to use it at the airport, for example.  The core object in survival analysis is the suvival function, which gives the probability that you will still be waiting (e.g., still alive) as a function of time.  The hazard function is the time derivative of the negative logarithm of the survival function,</p>
+<div class="math">
+\[h\left(t\right)=-\frac{d}{dt}\log\left(S\left(t\right)\right)\]</div>
+<p>or, more intuitively, it is the instantaneous rate at which events (such as death) occur.</p>
+<p>Sampling from the hazard function means drawing random numbers from the distribution that that hazard function implies.  Fortunately, the survival function is related to the CDF by</p>
+<div class="math">
+\[F\left(t\right)=1-S\left(t\right)\]</div>
+<p>and to the hazard function by</p>
+<div class="math">
+\[S\left(t\right)=e^{-\int_{0}^{t}h\left(\tau\right)d\tau}\]</div>
+<p>It is therefore possible, in principle, to compute the CDF from nothing but the hazard function.  Knowing the CDF, it is possible to compute the inverse of the CDF, and it is this fact which I exploit.</p>
+</div>
+<div class="section" id="inverse-transform-sampling">
+<h2>Inverse transform sampling</h2>
+<p>The probability integral transform (PIT) is a super useful thing to know about.  It&#8217;s used in multiple statistical methods and is the core of copula theory.  I&#8217;ve asked people about it in interviews before.  Anyway, the PIT says that for any random variable <span class="math">\(X\)</span> with CDF <span class="math">\(F_{X}\)</span>, the random variable</p>
+<div class="math">
+\[U=F_{X}\left(X\right)\]</div>
+<p>is distributed Uniform(0,1).  Super simple.  If you want to sample from the distribution with CDF <span class="math">\(F_{X}\)</span> and you know how to sample from the uniform distribution, all you need to do is take the inverse transform of your uniform sample!  Therefore, if I can get an inverse CDF from my hazard function, then I can sample using <a class="reference external" href="http://en.wikipedia.org/wiki/Inverse_transform_sampling">inverse transform sampling</a>.</p>
+</div>
+<div class="section" id="putting-the-pieces-together">
+<h2>Putting the pieces together</h2>
+<p>The key steps are as follows:</p>
+<ol class="arabic simple">
+<li>Draw a number, <span class="math">\(u\)</span>, from the Uniform(0,1) distribution</li>
+<li>Use some numerical solver to solve <span class="math">\(u=F\left(t\right)\)</span></li>
+<li>The solution, <span class="math">\(t\)</span>, from step 2 is drawn from the desired distribution</li>
+</ol>
+<p>It is step 2 that&#8217;s tricky, of course.  All I have is the hazard function, and I need to find the inverse of the CDF.  I used a bisection solution strategy to solve the equation in 2.  To evaluate the CDF at each step of the bisection search, I used <span class="code docutils literal"><span class="pre">scipy.integrate.quad</span></span> to numerically integrate the hazard function, then exploited the relationship between cumulative hazard and CDF.  The full code is in this <a class="reference external" href="https://gist.github.com/jcrudy/10481743">gist</a>.</p>
+</div>
+<div class="section" id="demonstration">
+<h2>Demonstration</h2>
+<p>In the code below I sample survival times from the distribution implied by the hazard function</p>
+<div class="math">
+\[h\left(t\right)=e^{\sin\left(t\right)-2}\]</div>
+<p>Check it out.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">numpy</span>
+<span class="kn">from</span> <span class="nn">samplers</span> <span class="kn">import</span> <span class="n">HazardSampler</span>
+
+<span class="c"># Set a random seed and sample size</span>
+<span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">m</span> <span class="o">=</span> <span class="mi">1000</span>
+
+<span class="c"># Use this totally crazy hazard function</span>
+<span class="n">hazard</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">t</span><span class="p">:</span> <span class="n">numpy</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">t</span><span class="p">)</span> <span class="o">-</span> <span class="mf">2.0</span><span class="p">)</span>
+
+<span class="c"># Sample failure times from the hazard function</span>
+<span class="n">sampler</span> <span class="o">=</span> <span class="n">HazardSampler</span><span class="p">(</span><span class="n">hazard</span><span class="p">)</span>
+<span class="n">failure_times</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">sampler</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">)])</span>
+
+<span class="c"># Apply some non-informative right censoring, just to demonstrate how it&#39;s done</span>
+<span class="n">censor_times</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">25.0</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">m</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">minimum</span><span class="p">(</span><span class="n">failure_times</span><span class="p">,</span> <span class="n">censor_times</span><span class="p">)</span>
+<span class="n">c</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">*</span> <span class="p">(</span><span class="n">censor_times</span> <span class="o">&gt;</span> <span class="n">failure_times</span>
+</pre></div>
+</div>
+<p>Now let&#8217;s make some plots to see how it looks.  First I&#8217;ll make histograms of the uncensored and censored survival times.  Then I&#8217;ll compare the true survival function to an estimate based on the uncensored sample.</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># Make some plots of the simulated data</span>
+<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">pyplot</span>
+<span class="kn">from</span> <span class="nn">statsmodels.distributions</span> <span class="kn">import</span> <span class="n">ECDF</span>
+
+<span class="c"># Plot a histogram of failure times from this hazard function</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">failure_times</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&#39;Uncensored Failure Times&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s">&#39;uncensored_hist.png&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c"># Plot a histogram of censored failure times from this hazard function</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">hist</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&#39;Non-informatively Right Censored Failure Times&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s">&#39;censored_hist.png&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="c"># Plot the empirical survival function (based on the censored sample) against the actual survival function</span>
+<span class="n">t</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mf">20.0</span><span class="p">,</span><span class="o">.</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">S</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">sampler</span><span class="o">.</span><span class="n">survival_function</span><span class="p">(</span><span class="n">t</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">t</span><span class="p">))])</span>
+<span class="n">S_hat</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">-</span> <span class="n">ECDF</span><span class="p">(</span><span class="n">failure_times</span><span class="p">)(</span><span class="n">t</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s">&#39;Survival Function Comparison&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">S</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&#39;True survival function&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">S_hat</span><span class="p">,</span> <span class="s">&#39;b--&#39;</span><span class="p">,</span> <span class="n">lw</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="s">&#39;Sampled survival function (1 - ECDF)&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s">&#39;Time&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">&#39;Proportion Still Alive&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s">&#39;survival_comp.png&#39;</span><span class="p">)</span>
+<span class="n">pyplot</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The resulting histograms look about how you&#8217;d expect for this weird hazard function.</p>
+<div class="figure">
+<a class="reference internal image-reference" href="../../../_images/uncensored_hist.png"><img alt="Histogram of uncensored survival times" src="../../../_images/uncensored_hist.png" style="width: 600.0px; height: 450.0px;" /></a>
+</div>
+<div class="figure">
+<a class="reference internal image-reference" href="../../../_images/censored_hist.png"><img alt="Histogram of right censored survival times" src="../../../_images/censored_hist.png" style="width: 600.0px; height: 450.0px;" /></a>
+</div>
+<p>The sample estimated survival function matches well with the actual survival function.</p>
+<div class="figure">
+<a class="reference internal image-reference" href="../../../_images/survival_comp.png"><img alt="Plot of true and sample estimated survival functions" src="../../../_images/survival_comp.png" style="width: 600.0px; height: 450.0px;" /></a>
+</div>
+</div>
+<div class="section" id="final-thoughts">
+<h2>Final thoughts</h2>
+<p>This algorithm is kind of slow, since it involves repeated numerical integration.  Furthermore, my implementation is not as efficient as it could be.  For example, I could do most of the numerical integration up front instead of on demand.  I also do the root finding in pure Python.  But, at least now I can draw samples from any hazard function I want!  For my purposes the slowness is not such a big deal, as I only need to simulate data sets to test my hazard regression methods.  Once I have the sample, I simply put it in a file and use it as needed.  If you wanted to do this as part of some kind of monte-carlo algorithm or something, you might need to write a more efficient implementation.  I would estimate 100-1000x speedup is possible with a lot of effort.</p>
+</div>
+</div>
+
+    <div class="postmeta">
+        <div class="author">
+            <span>Posted by Jason Rudy</span>
+        </div>
+        <div class="categories">
+            <span>
+                Filed under:
+                <a href="../../../categories/statistics.html">statistics</a>, <a href="../../../categories/python.html">python</a></span>
+        </div>
+        <div class="tags">
+            <span>
+                Tags:
+                <a href="../../../tags/survival_analysis.html">survival analysis</a></span>
+        </div>
+        </div>
+    <div id="disqus_thread"></div><script type="text/javascript">    var disqus_shortname = "jcrudy-blog";    var disqus_identifier = "2014/04/11/sampling_from_an_arbitrary_hazard_function";    disqus_thread();</script><noscript>Please enable JavaScript to view the    <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><ul class="related clearfix">
+            <li class="left"></li>
+            <li class="right"><a href="../../03/16/denorm.html">Transformations and consequences</a> &raquo; </li>
+        </ul></article><aside class="sidebar"><section><div class="widget">
+    <h1>Recent Posts</h1>
+    <ul><li>
+            <a href="#">Sampling from an arbitrary hazard function</a>
+        </li><li>
+            <a href="../../03/16/denorm.html">Transformations and consequences</a>
+        </li><li>
+            <a href="../../02/07/boosting_with_mars.html">Boosting with MARS</a>
+        </li><li>
+            <a href="../../../2013/12/08/introduction_to_iscala.html">Introduction to IScala</a>
+        </li><li>
+            <a href="../../../2013/12/02/blogstart.html">Blogstart</a>
+        </li></ul>
+</div>
+</section><section><div class="widget" id="searchbox">
+    <h1>Search</h1>
+    <form action="../../../search.html" method="get">
+        <input type="text" name="q" />
+        <button type="submit"><span class="webfont">L</span></button>
+    </form>
+</div></section></aside></div> <!-- #main --></div> <!-- #main-container -->
+
+        <div class="footer-container"><footer class="wrapper">&copy; Copyright 2013 and 2014, Jason Rudy. Powered by <a href="http://www.tinkerer.me/">Tinkerer</a> and <a href="http://sphinx.pocoo.org/">Sphinx</a>.</footer></div> <!-- footer-container -->
+
+      </div> <!--! end of #container --><!--[if lt IE 7 ]>
+          <script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>
+          <script>window.attachEvent('onload',function(){CFInstall.check({mode:'overlay'})})</script>
+        <![endif]-->
+    </body>
+</html>

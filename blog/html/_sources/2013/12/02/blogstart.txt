@@ -3,7 +3,7 @@ Blogstart
 
 
 .. author:: default
-.. categories:: none
+.. categories:: meta
 .. tags:: none
 .. comments::
 

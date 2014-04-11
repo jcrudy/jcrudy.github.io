@@ -4,7 +4,7 @@ Boosting with MARS
 
 
 .. author:: default
-.. categories:: Python
+.. categories:: python, statistics
 .. tags:: none
 .. comments::
 
@@ -14,19 +14,19 @@ Someone wrote me a few months ago asking for advice.  He was an R user who wante
 Let it be known that this fine community member was interested in MARS not for regression, as is its usual role, but for classification.  This first challenge is easily accomplished using the Pipeline class, as follows.
 
 .. code:: python
-	
+
 	from sklearn.pipeline import Pipeline
 	from sklearn.linear_model import LogisticRegression
 	from pyearth import Earth
 
 	model = Pipeline([('earth',Earth()),('log',LogisticRegression())])
 
-The above construction is equivalent to using the earth package from R with `glm=list(family=binomial)`.  
+The above construction is equivalent to using the earth package from R with `glm=list(family=binomial)`.
 
 Adaboost requires a classifier that can handle weighted samples.  The `Earth` class satisfies this requirement.  `LogisticRegression` does not, but we can replace it with `SGDClassifier` using `loss='log'` to get an equivalent Pipeline that can handle sample weights.  Or, at least, it seems like it could.  As it turns out, though, the `Pipeline` class doesn't actually know how to act as a base estimator in `AdaBoostClassifier`.  When you try to fit the resulting model, you get an error.
 
 .. code:: python
-	
+
 	from sklearn.pipeline import Pipeline
 	from pyearth import Earth
 	from sklearn.linear_model.stochastic_gradient import SGDClassifier
@@ -64,7 +64,7 @@ This code produces `TypeError: base_estimator must be a subclass of ClassifierMi
 Now this code gives `ValueError: need more than 1 value to unpack`.  That's somewhat more inscrutible.  To get around this one you actually have to rewrite part of the `Pipeline` class itself.  I posted a modified `Pipeline` as a gist_.  You can patch it in and use it like this.
 
 .. code:: python
-	
+
 	import pipeline as alt_pipeline
 	from sklearn.base import ClassifierMixin
 	from pyearth import Earth
@@ -85,13 +85,3 @@ So that's how you use AdaBoost with MARS in Python.
 
 
 .. _gist: https://gist.github.com/jcrudy/7493865#file-pipeline-py
-
-    
-
-
-
-
-
-
-
-

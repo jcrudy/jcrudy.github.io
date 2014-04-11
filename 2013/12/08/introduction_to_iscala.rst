@@ -4,7 +4,7 @@ Introduction to IScala
 
 
 .. author:: default
-.. categories:: none
+.. categories:: scala
 .. tags:: none
 .. comments::
 
@@ -41,10 +41,10 @@ The output above tells you the location of the ipython_config.py file.  The next
 	c = get_config()
 
 	# Use the IScala kernel
-	c.KernelManager.kernel_cmd = ["java", "-jar", 
-	                              "$ISCALA_PATH/lib/IScala.jar", 
-	                              "--profile", 
-	                              "{connection_file}", 
+	c.KernelManager.kernel_cmd = ["java", "-jar",
+	                              "$ISCALA_PATH/lib/IScala.jar",
+	                              "--profile",
+	                              "{connection_file}",
 	                              "--parent"]
 
 
@@ -55,7 +55,7 @@ After you get this working, with $ISCALA_PATH replaced by the path to wherever y
 
 	$ipython notebook --profile scala
 
-or similarly for console or qtconsole.  
+or similarly for console or qtconsole.
 
 
 Taking it for a spin
@@ -70,11 +70,11 @@ I'm going to try generating a random matrix with a standard normal distribution.
 
 	    import breeze.linalg._
 	    import breeze.stats.distributions._
-	    
+
 
 	.. parsed-literal::
 
-	    
+
 	    <console>:7: error: not found: value breeze
 	           import breeze.linalg._
 	                  ^
@@ -154,7 +154,7 @@ That worked!  I can now generate my random matrix like this:
 
 		val x = DenseMatrix.fill(10,10)(Gaussian(0,1).draw())
 
-	.. parsed-literal:: 
+	.. parsed-literal::
 
 		0.4695170376110142   0.5086639312405534    ... (10 total)
 		0.2604624080687952   -0.03678938632256435  ...
@@ -178,5 +178,3 @@ So IScala is up and running.  There doesn't yet appear to be any support for dis
 .. _IScala: https://github.com/mattpap/IScala
 .. _latest tarball: https://github.com/mattpap/IScala/releases
 .. _breeze: http://www.scalanlp.org/
-
-
