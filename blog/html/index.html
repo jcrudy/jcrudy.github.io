@@ -188,10 +188,10 @@
 </div>
 <div class="section" id="final-thoughts">
 <h2>Final thoughts</h2>
-<p>This algorithm is kind of slow, since it involves repeated numerical integration.  Furthermore, my implementation is not as efficient as it could be.  For example, I could do most of the numerical integration up front instead of on demand.  I also do the root finding in pure Python.  But, at least now I can draw samples from any hazard function I want!  For my purposes the slowness is not such a big deal, as I only need to simulate data sets to test my hazard regression methods.  Once I have the sample, I simply put it in a file and use it as needed.  If you wanted to do this as part of some kind of monte-carlo algorithm or something, you might need to write a more efficient implementation.  I would estimate 100-1000x speedup is possible with a lot of effort.</p>
+<p>This algorithm is kind of slow, since it involves repeated numerical integration.  Furthermore, my implementation is not as efficient as it could be.  For example, I could do most of the numerical integration up front instead of on demand.  I also do the root finding in pure Python.  But, at least now I can draw samples from any hazard function I want!  For my purposes the slowness is not such a big deal, as I only need to simulate data sets to test my hazard regression methods.  Once I have the sample, I simply put it in a file and use it as needed.  If you wanted to do this as part of some kind of monte carlo algorithm or something, you might need to write a more efficient implementation.  I would estimate 100-1000x speedup is possible with a lot of effort.</p>
 </div>
-<div class="section" id="folow-up">
-<h2>Folow up</h2>
+<div class="section" id="follow-up">
+<h2>Follow up</h2>
 <p>Apparently I should have searched harder, because it looks like there is actually an <a class="reference external" href="http://artax.karlin.mff.cuni.cz/r-help/library/CoxFlexBoost/html/rSurvTime.html">R package</a> that does almost exactly what I wanted.  I haven’t looked in detail, but it appears to also use an inversion-based method and I <em>think</em> handles arbitrary hazard functions.</p>
 </div>
 </div>
