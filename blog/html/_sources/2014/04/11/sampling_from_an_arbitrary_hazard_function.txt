@@ -154,3 +154,12 @@ Final thoughts
 --------------
 
 This algorithm is kind of slow, since it involves repeated numerical integration.  Furthermore, my implementation is not as efficient as it could be.  For example, I could do most of the numerical integration up front instead of on demand.  I also do the root finding in pure Python.  But, at least now I can draw samples from any hazard function I want!  For my purposes the slowness is not such a big deal, as I only need to simulate data sets to test my hazard regression methods.  Once I have the sample, I simply put it in a file and use it as needed.  If you wanted to do this as part of some kind of monte-carlo algorithm or something, you might need to write a more efficient implementation.  I would estimate 100-1000x speedup is possible with a lot of effort.
+
+
+Folow up
+--------
+
+Apparently I should have searched harder, because it looks like there is actually an `R package`_ that does almost exactly what I wanted.  I haven't looked in detail, but it appears to also use an inversion-based method and I *think* handles arbitrary hazard functions.
+
+
+.. _R package: http://artax.karlin.mff.cuni.cz/r-help/library/CoxFlexBoost/html/rSurvTime.html
