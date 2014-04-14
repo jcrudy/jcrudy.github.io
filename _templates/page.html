@@ -1,5 +1,7 @@
 {% extends "!page.html" %}
-{% block document %}
+{% block quicklinks %}
     {{ super() }}
-    {% include "../_static/gittip.js" %}
+    <li class="quicklink">
+        {% include "../_static/gittip.js" %}
+    </li>
 {% endblock %}
