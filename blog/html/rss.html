@@ -5,14 +5,90 @@
         <link>http://jcrudy.github.io/blog/html/</link>
         <description>Data wrangling, rodeo metaphors, and tng references</description>
         <language>en-us</language>
-        <pubDate>Fri, 11 Apr 2014 00:00:00 -0400</pubDate>
+        <pubDate>Wed, 01 Jul 2015 00:00:00 -0700</pubDate>
         
+        <item>
+            <link>http://jcrudy.github.io/blog/html/2015/07/01/julia_package_development_workflow.html</link>
+            <guid>http://jcrudy.github.io/blog/html/2015/07/01/julia_package_development_workflow.html</guid>
+            <title><![CDATA[Julia package development workflow]]></title>
+            <description><![CDATA[<h1>Julia package development workflow</h1>
+<p>In an effort to make a better MARS package and learn Julia, I’ve been making a MARS package in Julia.  I had a hard time figuring out how to set up my development environment and workflow.  What software do I need?  How do I configure it?  Where do I put stuff?  How do I run my tests?  This post is about my answers to those questions.  I’m using Mac OS 10.9.5.</p>
+<div class="section" id="software-installation">
+<h2>Software installation</h2>
+<p>I’m using Juno to edit my Julia files.  Installation is pretty easy.</p>
+<ol class="arabic">
+<li><p class="first">Install the latest Julia and Juno from the <a class="reference external" href="http://julialang.org/downloads/">download site</a>.</p>
+</li>
+<li><dl class="first docutils">
+<dt>You then have to tell Juno where to find Julia.  I guess it comes bundled with its own Julia, which will only lead to problems.  See <a class="reference external" href="http://junolab.org/docs/install-manual.html">the docs</a> for more details on this:</dt>
+<dd><ol class="first last loweralpha simple">
+<li>Start Juno.</li>
+<li>Press Ctrl-Space.</li>
+<li>Type “Settings: User behaviors” and press Enter.</li>
+<li>Add [:app :lt.objs.langs.julia/julia-path “/path/to/julia”] to the settings file that appears, where “path/to/julia” is replaced with the path to the Julia you just installed.  In my case, the path is “/Applications/Julia-0.3.10.app/Contents/Resources/julia/bin/julia”.</li>
+</ol>
+</dd>
+</dl>
+</li>
+</ol>
+</div>
+<div class="section" id="project-setup">
+<h2>Project setup</h2>
+<p>Julia projects are easy to set up if you just want to write scripts or interact with IJulia.  Writing packages is a little trickier.  Here are steps to get you started.</p>
+<ol class="arabic">
+<li><dl class="first docutils">
+<dt>From Juno,</dt>
+<dd><ol class="first last loweralpha simple">
+<li>Type Ctrl-Space.</li>
+<li>Type “spawn” and press Enter.</li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>From the spawned Julia terminal,</dt>
+<dd><ol class="first last loweralpha simple">
+<li>Type Pkg.generate(“MyPackage”, “MIT”).  Here “MyPackage” is the name of your package and “MIT” is the desired license.  If you don’t like the license, you can change it later.</li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><p class="first">Julia generated a skeleton for your new package and put it somewhere in your .julia directory.  It kind of sucks having to work with your code in some hidden configuration directory, so move the created package to wherever you like and then create a symbolic link from .julia.  Julia won’t know the difference.  Also, rename it with a ”.jl” extension.  In the terminal, do:</p>
+</li>
+</ol>
+<div class="code bash highlight-python"><div class="highlight"><pre>mv ~/.julia/v0.3/MyPackage workspace/MyPackage.jl
+ln -s workspace/MyPackage.jl ~/.julia/v0.3/MyPackage
+</pre></div>
+</div>
+<p>Your Julia version might be different, so check that.</p>
+<ol class="arabic simple" start="4">
+<li>Open your package in Juno.  Go to File-&gt;Open folder and select MyPackage from your workspace.</li>
+</ol>
+</div>
+<div class="section" id="development-cycle">
+<h2>Development cycle</h2>
+<p>Julia automatically created src and test directories, as well as src/MyPackage.jl and test/runtests.jl.  To work on your package, do the following:</p>
+<ol class="arabic simple">
+<li>Edit your code.</li>
+<li>Edit your tests.</li>
+<li>Make sure runtests.jl runs all your tests.  People usually use include() or just write all the tests directly in the file.</li>
+<li>From your spawned julia terminal, do Pkg.test(“MyPackage”).</li>
+<li>GOTO 1.</li>
+</ol>
+</div>
+<div class="section" id="version-control-and-publishing">
+<h2>Version control and publishing</h2>
+<p>The package directory created by Julia is already a git repository.  You can add it to github if you want.  I haven’t published any packages yet, but see the <a class="reference external" href="http://julia.readthedocs.org/en/latest/manual/packages/">Julia manual</a> for information on how to do it.</p>
+</div>
+]]></description>
+             <pubDate>Wed, 01 Jul 2015 00:00:00 -0700</pubDate>
+        </item>
+    
         <item>
             <link>http://jcrudy.github.io/blog/html/2014/04/11/sampling_from_an_arbitrary_hazard_function.html</link>
             <guid>http://jcrudy.github.io/blog/html/2014/04/11/sampling_from_an_arbitrary_hazard_function.html</guid>
             <title><![CDATA[How to sample from a hazard function]]></title>
-            <description><![CDATA[<div class="section" id="how-to-sample-from-a-hazard-function">
-<h1>How to sample from a hazard function</h1>
+            <description><![CDATA[<h1>How to sample from a hazard function</h1>
 <p>When you develop new methods, it’s important to test them on simulated data.  Recently I’ve been developing some survival analysis methods and found myself needing to simulate survival data sets with arbitrary hazard functions.  I searched and searched and couldn’t find a good way to do it, so I thought I’d share my solution here.</p>
 <div class="section" id="still-alive">
 <h2>Still alive?</h2>
@@ -123,18 +199,17 @@
 <h2>Follow up</h2>
 <p>Apparently I should have searched harder, because it looks like there is actually an <a class="reference external" href="http://artax.karlin.mff.cuni.cz/r-help/library/CoxFlexBoost/html/rSurvTime.html">R package</a> that does almost exactly what I wanted.  I haven’t looked in detail, but it appears to also use an inversion-based method and I <em>think</em> handles arbitrary hazard functions.</p>
 </div>
-</div>]]></description>
+]]></description>
             <category><![CDATA[ statistics ]]></category>
             <category><![CDATA[ python ]]></category>
-             <pubDate>Fri, 11 Apr 2014 00:00:00 -0400</pubDate>
+             <pubDate>Fri, 11 Apr 2014 00:00:00 -0700</pubDate>
         </item>
     
         <item>
             <link>http://jcrudy.github.io/blog/html/2014/03/16/denorm.html</link>
             <guid>http://jcrudy.github.io/blog/html/2014/03/16/denorm.html</guid>
             <title><![CDATA[Transformations and consequences]]></title>
-            <description><![CDATA[<div class="section" id="transformations-and-consequences">
-<h1>Transformations and consequences</h1>
+            <description><![CDATA[<h1>Transformations and consequences</h1>
 <blockquote class="epigraph">
 <div><p>He knows she tried to be forgiving, but who can just shrug away a guilty lie,
 a stab in the back? Such a mistake will change a relationship irreversibly,
@@ -144,7 +219,7 @@ even if we have learned from the mistake and would never repeat it.</p>
 <p>Today I want to talk about mistakes.  No, not mistakes, really.  A mistake is something we regret, something with lingering consequences, like when you work too much on a laptop and get a painful neck spasm that lasts the rest of the week.  A mistake is an action that, if we had the chance to go back and try again, we would do differently.  But there are some actions that we regret, whose consequences linger painfully, but that we wouldn’t do differently even if we somehow had the chance.  In either case we limp along as best we can, trying to compensate for that which is irretrievably lost.</p>
 <p>I’m alluding, of course, to the Box-Cox transformation, and, more generally, to all those nonlinear monotonic transformations which may be applied to a response variable in a regression problem to make the regression perform better.  These kinds of transformations can sometimes mark the difference between a model that is quite predictive and one that is over fit and not at all predictive on the testing set.  The problem, of course, is that once you build your model on the transformed response variable, it becomes difficult to make predications on the original response scale.  One can’t simply apply the inverse of the original transformation to the predictions and expect everything to be fine.  Everything will not be fine.  Today I want to talk about what happens after the nonlinear monotonic transformation.  It wasn’t a mistake.  It’s just a mess, but we’re in this mess together.</p>
 <p>Let’s say we’ve got some response <span class="math">\(y\)</span> and a nonlinear monotonic transformation <span class="math">\(f\left(\right)\)</span>.  Let’s have <span class="math">\(z=f\left(y\right)\)</span> and say we have some pretty good predictor <span class="math">\(\hat{z}\)</span> of <span class="math">\(E\left(z\right)\)</span>.  Firstly, what makes this predictor pretty good?  How can we compare it to some other predictor, <span class="math">\(\hat{y}\)</span>, that we built for <span class="math">\(E\left(y\right)\)</span> on the original scale?  It’s a popular practice to use the coefficient of determination, <span class="math">\(R^2\)</span>, to assess the predictive power of a regression model, but <span class="math">\(R^2\)</span> is very sensitive to nonlinear transformations.  A better idea in this context is to use a rank based measure of predictive power, such as Spearman’s <span class="math">\(\rho\)</span> or Kendall’s <span class="math">\(\tau\)</span>.  These metrics will not be influenced by any monotonic transformation.  I also like to compare <span class="math">\(R^2\)</span> between the training set and a reserved testing set for my regression models.  Often I will find extreme overfitting on the original response scale while the model I fit on the transformed response shows good generalization.</p>
-<p>So we’ve assessed predictiveness and generalization for our models, and the best one is <span class="math">\(\hat{z}\)</span>.  Great.  That means we have a model for <span class="math">\(E\left(f\left(y\right)\right)\)</span> and we want a model for <span class="math">\(E\left(y\right)\)</span>.  We know <span class="math">\(f\left(y\right)\)</span>, and since it’s monotonic we can presumably find the inverse <span class="math">\(f^{-1}\left(z\right)=y\)</span>.  However, <span class="math">\(E\left(f\left(y\right)\right)\ne f\left(E\left(y\right)\right)\)</span> in general, so it is also not generally true that <span class="math">\(f^{-1}\left(E\left(f\left(y\right)\right)\right) = E\left(y\right)\)</span>.  In fact it is usually false.  Super false.  It turns out that this data transformation problem is similar to another problem about which a group of scientists in La Jolla has recently published a few short articles: risk model calibration.  I stumbled upon their publications recently when I was researching the topic of this post <a class="reference internal" href="http://jcrudy.github.io/blog/html/2014/03/16/denorm.html#jiang2011">[1]</a><a class="reference internal" href="http://jcrudy.github.io/blog/html/2014/03/16/denorm.html#jiang2011a">[2]</a><a class="reference internal" href="http://jcrudy.github.io/blog/html/2014/03/16/denorm.html#wu2012">[3]</a>.  The problems are essentially identical: given a predictive model with good rank-based performance (area under the ROC curve in the case of classifiers, Spearman’s <span class="math">\(\rho\)</span> or Kendall’s <span class="math">\(tau\)</span> in the case of regression problems with numeric response), find a transformation such that the output of that model accurately predicts the expected value of the quantity of interest.  Generally, a monotonic transformation is desired so that the rank-based performance is preserved, but one of the three methods described by the lab in question actually gives a transformation that is not strictly monotonic.  I don’t want to describe the methods in detail here.  The papers I cited are freely available online.  I mostly just want to share a few methods I implemented that are very similar (and were inspired by these scientists’ fine work).</p>
+<p>So we’ve assessed predictiveness and generalization for our models, and the best one is <span class="math">\(\hat{z}\)</span>.  Great.  That means we have a model for <span class="math">\(E\left(f\left(y\right)\right)\)</span> and we want a model for <span class="math">\(E\left(y\right)\)</span>.  We know <span class="math">\(f\left(y\right)\)</span>, and since it’s monotonic we can presumably find the inverse <span class="math">\(f^{-1}\left(z\right)=y\)</span>.  However, <span class="math">\(E\left(f\left(y\right)\right)\ne f\left(E\left(y\right)\right)\)</span> in general, so it is also not generally true that <span class="math">\(f^{-1}\left(E\left(f\left(y\right)\right)\right) = E\left(y\right)\)</span>.  In fact it is usually false.  Super false.  It turns out that this data transformation problem is similar to another problem about which a group of scientists in La Jolla has recently published a few short articles: risk model calibration.  I stumbled upon their publications recently when I was researching the topic of this post <a class="reference internal" href="http://jcrudy.github.io/blog/html/2014/03/16/denorm.html#jiang2011" id="id1">[1]</a><a class="reference internal" href="http://jcrudy.github.io/blog/html/2014/03/16/denorm.html#jiang2011a" id="id2">[2]</a><a class="reference internal" href="http://jcrudy.github.io/blog/html/2014/03/16/denorm.html#wu2012" id="id3">[3]</a>.  The problems are essentially identical: given a predictive model with good rank-based performance (area under the ROC curve in the case of classifiers, Spearman’s <span class="math">\(\rho\)</span> or Kendall’s <span class="math">\(tau\)</span> in the case of regression problems with numeric response), find a transformation such that the output of that model accurately predicts the expected value of the quantity of interest.  Generally, a monotonic transformation is desired so that the rank-based performance is preserved, but one of the three methods described by the lab in question actually gives a transformation that is not strictly monotonic.  I don’t want to describe the methods in detail here.  The papers I cited are freely available online.  I mostly just want to share a few methods I implemented that are very similar (and were inspired by these scientists’ fine work).</p>
 <div class="section" id="an-example">
 <h2>An example</h2>
 <p>First I’m going to simulate a simple regression problem with a lognormal response distribution.</p>
@@ -187,7 +262,7 @@ even if we have learned from the mistake and would never repeat it.</p>
 <span class="c"># tau is 0.606838 for the log model and 0.605232 for the direct model</span>
 </pre></div>
 </div>
-<p>In this case, the difference in rank-based performance between the two models is not significant.  I just wanted to show how the comparison might be made.  When using more complex nonparametric methods, data scale has a significant effect on generalization ability of the fitted models.  With linear regression on this particular problem, overfitting is not really an issue.  Now I want to try out some different ways of reversing the log transformation on the predictions.  It turns out that for this particular problem, where the data have a known lognormal distribution, the exact right answer is known.  That is, it is a provable fact that <span class="math">\(E\left(y\right) = e^{E\left(z\right) + \frac{\sigma^2}{2}}\)</span>, where <span class="math">\(\sigma\)</span> is the known scale parameter of the lognormal distribution.  I will use this result as a basis for comparison.  First, I’m going to try using the obvious and wrong inverse, <span class="math">\(\hat{y} = e^{\hat{z}}\)</span>.  Next, I’m going to use the two methods I implemented, SmoothIso (based on the idea from <a class="reference internal" href="http://jcrudy.github.io/blog/html/2014/03/16/denorm.html#jiang2011a">[2]</a>) and SmoothMovingAverage (based more loosely on the idea from <a class="reference internal" href="http://jcrudy.github.io/blog/html/2014/03/16/denorm.html#jiang2011">[1]</a>).  Finally, I’ll plot the results together to see how they compare.</p>
+<p>In this case, the difference in rank-based performance between the two models is not significant.  I just wanted to show how the comparison might be made.  When using more complex nonparametric methods, data scale has a significant effect on generalization ability of the fitted models.  With linear regression on this particular problem, overfitting is not really an issue.  Now I want to try out some different ways of reversing the log transformation on the predictions.  It turns out that for this particular problem, where the data have a known lognormal distribution, the exact right answer is known.  That is, it is a provable fact that <span class="math">\(E\left(y\right) = e^{E\left(z\right) + \frac{\sigma^2}{2}}\)</span>, where <span class="math">\(\sigma\)</span> is the known scale parameter of the lognormal distribution.  I will use this result as a basis for comparison.  First, I’m going to try using the obvious and wrong inverse, <span class="math">\(\hat{y} = e^{\hat{z}}\)</span>.  Next, I’m going to use the two methods I implemented, SmoothIso (based on the idea from <a class="reference internal" href="http://jcrudy.github.io/blog/html/2014/03/16/denorm.html#jiang2011a" id="id4">[2]</a>) and SmoothMovingAverage (based more loosely on the idea from <a class="reference internal" href="http://jcrudy.github.io/blog/html/2014/03/16/denorm.html#jiang2011" id="id5">[1]</a>).  Finally, I’ll plot the results together to see how they compare.</p>
 <div class="code python highlight-python"><div class="highlight"><pre><span class="c"># Range for plotting calibration curves</span>
 <span class="n">z_range</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">z_hat</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">z_hat</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="o">.</span><span class="mo">05</span><span class="p">)</span>
 
@@ -228,7 +303,7 @@ even if we have learned from the mistake and would never repeat it.</p>
 <h2>Final thoughts</h2>
 <p>The plot illustrates nicely that simply inverting the original transformation (solid red line) is a very bad idea.  On this data set both the calibration methods stick near the correct (dashed red) curve, and I have found them to be effective for real data sets as well.  What’s nice about both calibration methods is that they are purely data driven.  They will work just as well in situations in which the exact distribution of the data is either not convenient or not known, or even in situations in which the original transformation is unknown.  Instead of making distributional assumptions and trying to solve integrals, you can just plug in these calibration methods and most likely end up with a better result.</p>
 <p>So, how does all this work?  The exact details are beyond the scope of this particular blog entry, but generally speaking SmoothIso works by performing isotonic regression followed by MARS, and SmoothMovingAverage works by training a MARS model on a moving average of the training data.  I encourage you to read the articles and check out my implementations.  I’m putting all the code used in this post, including the calibrators themselves, in a <a class="reference external" href="https://github.com/jcrudy/calibrators">github repository</a>.  I hope you’ll try it.</p>
-<p id="bibtex-bibliography-2014/03/16/denorm-0"><table class="docutils citation" frame="void" id="jiang2011" rules="none">
+<p id="bibtex-bibliography-2014/03/16/denorm-0"/><table class="docutils citation" frame="void" id="jiang2011" rules="none">
 <colgroup><col class="label"/><col/></colgroup>
 <tbody valign="top">
 <tr><td class="label">[1]</td><td><em>(<a class="fn-backref" href="#id1">1</a>, <a class="fn-backref" href="#id5">2</a>)</em> Xiaoqian Jiang, Melanie Osl, Jihoon Kim, and Lucila Ohno-Machado. Calibrating predictive model estimates to support personalized medicine.. <em>Journal of the American Medical Informatics Association</em>, 19(2):263–274, 2011.</td></tr>
@@ -246,20 +321,19 @@ even if we have learned from the mistake and would never repeat it.</p>
 <tr><td class="label"><a class="fn-backref" href="#id3">[3]</a></td><td>Yuan Wu, Xiaoqian Jiang, Jihoon Kim, and Lucila Ohno-machado. I-spline Smoothing for Calibrating Predictive Models. <em>AMIA Summits Transl Sci Proc. 2012</em>, pages 39–46, 2012.</td></tr>
 </tbody>
 </table>
-</p>
+
 </div>
-</div>]]></description>
+]]></description>
             <category><![CDATA[ python ]]></category>
             <category><![CDATA[ statistics ]]></category>
-             <pubDate>Sun, 16 Mar 2014 00:00:00 -0400</pubDate>
+             <pubDate>Sun, 16 Mar 2014 00:00:00 -0700</pubDate>
         </item>
     
         <item>
             <link>http://jcrudy.github.io/blog/html/2014/02/07/boosting_with_mars.html</link>
             <guid>http://jcrudy.github.io/blog/html/2014/02/07/boosting_with_mars.html</guid>
             <title><![CDATA[Boosting with MARS]]></title>
-            <description><![CDATA[<div class="section" id="boosting-with-mars">
-<h1>Boosting with MARS</h1>
+            <description><![CDATA[<h1>Boosting with MARS</h1>
 <p>Someone wrote me a few months ago asking for advice.  He was an R user who wanted to combine the adaboost algorithm with MARS and was starting to look outside the R community.  As a recovering (and occasionally relapsing) R user myself, I was only too happy to look into the matter.  As it turns out, it’s actually not that hard to do with a combination of scikit-learn and py-earth.  I now recount the adventure in detail.</p>
 <p>Let it be known that this fine community member was interested in MARS not for regression, as is its usual role, but for classification.  This first challenge is easily accomplished using the Pipeline class, as follows.</p>
 <div class="code python highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">sklearn.pipeline</span> <span class="kn">import</span> <span class="n">Pipeline</span>
@@ -322,18 +396,17 @@ even if we have learned from the mistake and would never repeat it.</p>
 </pre></div>
 </div>
 <p>So that’s how you use AdaBoost with MARS in Python.</p>
-</div>]]></description>
+]]></description>
             <category><![CDATA[ python ]]></category>
             <category><![CDATA[ statistics ]]></category>
-             <pubDate>Fri, 07 Feb 2014 00:00:00 -0500</pubDate>
+             <pubDate>Fri, 07 Feb 2014 00:00:00 -0800</pubDate>
         </item>
     
         <item>
             <link>http://jcrudy.github.io/blog/html/2013/12/08/introduction_to_iscala.html</link>
             <guid>http://jcrudy.github.io/blog/html/2013/12/08/introduction_to_iscala.html</guid>
             <title><![CDATA[Introduction to IScala]]></title>
-            <description><![CDATA[<div class="section" id="introduction-to-iscala">
-<h1>Introduction to IScala</h1>
+            <description><![CDATA[<h1>Introduction to IScala</h1>
 <p>Python is an amazingly productive glue language.  It’s become popular among data scientists over the past several years, partially because of great libraries like numpy, scipy, pandas, scikit-learn, statsmodels, etc., and partially because so much of data science consists simply of gluing things together.  There is a part of my life, though, that consists of actually implementing machine learning algorithms.  Python does not make that part easy.  In order to write efficient numerical code for Python, you need to move the majority of the computation out of Python and into statically typed, compiled code.  The best solution I’ve found is Cython, which compiles a Python-like language to C while taking care of the Python C api for you.  I wrote py-earth in Cython and am fairly happy with the result.  However, Cython is still a (really fantastic) hack.  Getting good performance out of Cython code requires knowledge of both C and the internals of Python, and most of the good stuff about Python - passing around functions, object-oriented design, readability - is lost when you start to really optimize.  If you want to combine concurrency with objects, you actually have to start passing pointers around.</p>
 <p>I guess what I’m saying is I want to branch out a little.  I’d like to find a language where I can be productive both as a scientific user and as a scientific developer, something modern, new but not too new, mainstream but with just a bit of an edge.  Tall.  Anyway, it seems like there are two new languages out there vying for my affection.  I chose Scala over Julia for two reasons.  Firstly, Scala is a general purpose programming language.  While statisticians and academic scientists are very happy to use single purpose tools like R to do their analyses, data scientists need the ability to actually write software and integrate their analyses into larger projects.  Secondly, Scala is implemented on the JVM and compatible with Java.  That means I can use any Java library from within Scala and use Scala to write map-reduce queries for an Hadoop cluster without using the streaming interface.</p>
 <p>So I’m exploring the Scala ecosystem and learning the language (which so far I think is fantastic).  My goal is to do some data analyses and implement one or two non-trivial algorithms in Scala.  But one step at a time.  Today I want to share <a class="reference external" href="https://github.com/mattpap/IScala">IScala</a>, which is basically just IPython with a Scala backend.  Although I actually rarely use IPython, I know a lot of people do and I suspect that Scala adoption will require the existence of a useful IPython replacement.</p>
@@ -352,11 +425,11 @@ even if we have learned from the mistake and would never repeat it.</p>
 <span class="n">c</span> <span class="o">=</span> <span class="n">get_config</span><span class="p">()</span>
 
 <span class="c"># Use the IScala kernel</span>
-<span class="hll"><span class="n">c</span><span class="o">.</span><span class="n">KernelManager</span><span class="o">.</span><span class="n">kernel_cmd</span> <span class="o">=</span> <span class="p">[</span><span class="s">&quot;java&quot;</span><span class="p">,</span> <span class="s">&quot;-jar&quot;</span><span class="p">,</span>
-</span><span class="hll">                              <span class="s">&quot;$ISCALA_PATH/lib/IScala.jar&quot;</span><span class="p">,</span>
-</span><span class="hll">                              <span class="s">&quot;--profile&quot;</span><span class="p">,</span>
-</span><span class="hll">                              <span class="s">&quot;{connection_file}&quot;</span><span class="p">,</span>
-</span><span class="hll">                              <span class="s">&quot;--parent&quot;</span><span class="p">]</span>
+<span class="hll"><span class="n">c</span><span class="o">.</span><span class="n">KernelManager</span><span class="o">.</span><span class="n">kernel_cmd</span> <span class="o">=</span> <span class="p">[</span><span class="s">"java"</span><span class="p">,</span> <span class="s">"-jar"</span><span class="p">,</span>
+</span><span class="hll">                              <span class="s">"$ISCALA_PATH/lib/IScala.jar"</span><span class="p">,</span>
+</span><span class="hll">                              <span class="s">"--profile"</span><span class="p">,</span>
+</span><span class="hll">                              <span class="s">"{connection_file}"</span><span class="p">,</span>
+</span><span class="hll">                              <span class="s">"--parent"</span><span class="p">]</span>
 </span></pre></div>
 </div>
 <p>After you get this working, with $ISCALA_PATH replaced by the path to wherever you put the unpacked IScala download, you should be able to run IScala by saying:</p>
@@ -373,29 +446,31 @@ even if we have learned from the mistake and would never repeat it.</p>
 <span class="kn">import</span> <span class="nn">breeze.stats.distributions._</span>
 </pre></div>
 </div>
-<div class="highlight-python"><pre>&lt;console&gt;:7: error: not found: value breeze
+<div class="highlight-python"><div class="highlight"><pre>&lt;console&gt;:7: error: not found: value breeze
        import breeze.linalg._
               ^
 &lt;console&gt;:8: error: not found: value breeze
        import breeze.stats.distributions._
-              ^</pre>
+              ^
+</pre></div>
 </div>
 </div>
 <p>I needed to tell sbt where to find breeze.  It turns out you can use IPython magic to talk to sbt like this.</p>
 <div class="iscala container">
-<div class="code scala highlight-python"><pre>%resolvers += &quot;ScalaNLP Maven2&quot; at &quot;http://repo.scalanlp.org/repo&quot;
+<div class="code scala highlight-python"><div class="highlight"><pre>%resolvers += "ScalaNLP Maven2" at "http://repo.scalanlp.org/repo"
 
-%resolvers += &quot;Scala Tools Snapshots&quot; at &quot;http://scala-tools.org/repo-snapshots/&quot;
+%resolvers += "Scala Tools Snapshots" at "http://scala-tools.org/repo-snapshots/"
 
-%resolvers += &quot;Typesafe Repository&quot; at &quot;http://repo.typesafe.com/typesafe/releases/&quot;
+%resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/"
 
-%resolvers += &quot;Sonatype Snapshots&quot; at &quot;https://oss.sonatype.org/content/repositories/snapshots&quot;
+%resolvers += "Sonatype Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
 
-%libraryDependencies += &quot;org.scalanlp&quot; %% &quot;breeze&quot; % &quot;0.6-SNAPSHOT&quot;
+%libraryDependencies += "org.scalanlp" %% "breeze" % "0.6-SNAPSHOT"
 
-%update</pre>
+%update
+</pre></div>
 </div>
-<div class="highlight-python"><pre>[info] Resolving org.scalanlp#breeze_2.10;0.6-SNAPSHOT ...
+<div class="highlight-python"><div class="highlight"><pre>[info] Resolving org.scalanlp#breeze_2.10;0.6-SNAPSHOT ...
 [info] Resolving org.scala-lang#scala-library;2.10.3 ...
 [info] Resolving org.scalanlp#breeze-macros_2.10;0.1 ...
 [info] Resolving org.scala-lang#scala-reflect;2.10.3 ...
@@ -424,7 +499,8 @@ even if we have learned from the mistake and would never repeat it.</p>
 [info] Resolving junit#junit;4.8.2 ...
 [info] Resolving org.apache.commons#commons-math3;3.2 ...
 [info] Resolving com.typesafe#scalalogging-slf4j_2.10;1.0.1 ...
-[info] Resolving org.slf4j#slf4j-api;1.7.2 ...</pre>
+[info] Resolving org.slf4j#slf4j-api;1.7.2 ...
+</pre></div>
 </div>
 <div class="code scala highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">breeze.linalg._</span>
 <span class="kn">import</span> <span class="nn">breeze.stats.distributions._</span>
@@ -433,9 +509,10 @@ even if we have learned from the mistake and would never repeat it.</p>
 </div>
 <p>That worked!  I can now generate my random matrix like this:</p>
 <div class="iscala container">
-<div class="code scala highlight-python"><pre>val x = DenseMatrix.fill(10,10)(Gaussian(0,1).draw())</pre>
+<div class="code scala highlight-python"><div class="highlight"><pre>val x = DenseMatrix.fill(10,10)(Gaussian(0,1).draw())
+</pre></div>
 </div>
-<div class="highlight-python"><pre>0.4695170376110142   0.5086639312405534    ... (10 total)
+<div class="highlight-python"><div class="highlight"><pre>0.4695170376110142   0.5086639312405534    ... (10 total)
 0.2604624080687952   -0.03678938632256435  ...
 -1.0528337756159565  0.10082649287241126   ...
 -0.550492849679171   -0.5761878622563654   ...
@@ -444,26 +521,26 @@ even if we have learned from the mistake and would never repeat it.</p>
 -0.5879313146878662  1.206569217055404     ...
 1.890300548243616    -0.30273380341887257  ...
 0.24792587873136573  -0.04329745764599858  ...
-1.5057194826425122   0.9516921598743895    ...</pre>
+1.5057194826425122   0.9516921598743895    ...
+</pre></div>
 </div>
 </div>
 </div>
 <div class="section" id="final-thoughts">
 <h2>Final thoughts</h2>
-<p>So IScala is up and running.  There doesn’t yet appear to be any support for displaying plots in the notebook, and it is a little annoying that I have to %update to add new dependencies (which causes the Scala process to restart and all existing objects to be lost from memory).  However, IScala is a new project and these are minor issues.  During the process I discovered something disconcerting about the Scala ecosystem, however.  There is not currently a Scala equivalent of numpy.  That is, there is no basic structure that everyone agrees is the standard backend array type.  Instead, there are several competing packages (of which <a class="reference external" href="http://www.scalanlp.org">breeze</a> is just one) that accomplish this extremely basic function.  I need to decide which one I want to develop on.</p>
+<p>So IScala is up and running.  There doesn’t yet appear to be any support for displaying plots in the notebook, and it is a little annoying that I have to %update to add new dependencies (which causes the Scala process to restart and all existing objects to be lost from memory).  However, IScala is a new project and these are minor issues.  During the process I discovered something disconcerting about the Scala ecosystem, however.  There is not currently a Scala equivalent of numpy.  That is, there is no basic structure that everyone agrees is the standard backend array type.  Instead, there are several competing packages (of which <a class="reference external" href="http://www.scalanlp.org/">breeze</a> is just one) that accomplish this extremely basic function.  I need to decide which one I want to develop on.</p>
 </div>
-</div>]]></description>
+]]></description>
             <category><![CDATA[ scala ]]></category>
-             <pubDate>Sun, 08 Dec 2013 00:00:00 -0500</pubDate>
+             <pubDate>Sun, 08 Dec 2013 00:00:00 -0800</pubDate>
         </item>
     
         <item>
             <link>http://jcrudy.github.io/blog/html/2013/12/02/blogstart.html</link>
             <guid>http://jcrudy.github.io/blog/html/2013/12/02/blogstart.html</guid>
             <title><![CDATA[Blogstart]]></title>
-            <description><![CDATA[<div class="section" id="blogstart">
-<h1>Blogstart</h1>
-<p>Once in a great while a new blog is born, and today these rusty tubes are graced with a sparkling new presence.  It’s a little rough right now, but greatness can grow from meek beginnings.  Let us take a moment to remember some of the great weblogs of the past, whose unfathomable heights this humble site may hope one day to spy on the horizon.  <a class="reference external" href="http://jakevdp.github.io">Pythonic Perambulations</a>, <a class="reference external" href="http://twiecki.github.io">While My MCMC Gently Samples</a>, and all the rest, may I follow in your sizable footsteps.  This blog will be much in the spirit of these gentle giants.  It will concern my work and particularly my Python code.  It will contain short pieces of opinion, medium length demonstrations of technology, and longer analyses of data.  It will not be limited to Python or even to programming and statistics, but will tend to concern those topics more than any other.  At least that is my intention.</p>
+            <description><![CDATA[<h1>Blogstart</h1>
+<p>Once in a great while a new blog is born, and today these rusty tubes are graced with a sparkling new presence.  It’s a little rough right now, but greatness can grow from meek beginnings.  Let us take a moment to remember some of the great weblogs of the past, whose unfathomable heights this humble site may hope one day to spy on the horizon.  <a class="reference external" href="http://jakevdp.github.io/">Pythonic Perambulations</a>, <a class="reference external" href="http://twiecki.github.io/">While My MCMC Gently Samples</a>, and all the rest, may I follow in your sizable footsteps.  This blog will be much in the spirit of these gentle giants.  It will concern my work and particularly my Python code.  It will contain short pieces of opinion, medium length demonstrations of technology, and longer analyses of data.  It will not be limited to Python or even to programming and statistics, but will tend to concern those topics more than any other.  At least that is my intention.</p>
 <div class="section" id="blog-rules">
 <h2>Blog rules <a class="footnote-reference" href="#f1" id="id1">[1]</a></h2>
 <p>Every blog needs rules.  Here are some.</p>
@@ -483,9 +560,9 @@ even if we have learned from the mistake and would never repeat it.</p>
 </tbody>
 </table>
 </div>
-</div>]]></description>
+]]></description>
             <category><![CDATA[ meta ]]></category>
-             <pubDate>Mon, 02 Dec 2013 00:00:00 -0500</pubDate>
+             <pubDate>Mon, 02 Dec 2013 00:00:00 -0800</pubDate>
         </item>
     
     </channel>

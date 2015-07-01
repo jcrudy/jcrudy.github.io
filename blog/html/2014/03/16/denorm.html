@@ -21,7 +21,7 @@
             <link rel="stylesheet" href="../../../_static/main.css" type="text/css">
             <link rel="stylesheet" href="../../../_static/modern5.css" type="text/css">
             <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-            <link rel="stylesheet" href="../../../_static/webfont.css" type="text/css">
+            <link rel="stylesheet" href="../../../_static/font-awesome.min.css" type="text/css">
         <link rel="shortcut icon" href="../../../_static/tinkerer.ico" /><!-- Load modernizr and JQuery -->
         <script src="../../../_static/vendor/modernizr-2.6.2.min.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
@@ -31,12 +31,12 @@
         <link rel="next" title="Boosting with MARS" href="../../02/07/boosting_with_mars.html" /><link rel="prev" title="How to sample from a hazard function" href="../../04/11/sampling_from_an_arbitrary_hazard_function.html" /><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../rss.html" /><script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '1.2.1',
+        VERSION:     '1.5',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
       };
-    </script><script type="text/javascript" src="../../../_static/underscore.js"></script><script type="text/javascript" src="../../../_static/doctools.js"></script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><script type="text/javascript" src="../../../_static/disqus.js"></script>
+    </script><script type="text/javascript" src="../../../_static/underscore.js"></script><script type="text/javascript" src="../../../_static/doctools.js"></script><script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><script type="text/javascript" src="../../../_static/disqus.js"></script>
 
     <script type="text/javascript">
         $(document).ready(function () {
@@ -57,16 +57,16 @@
             }
         });
     </script></head>
-    <body>
+    <body role="document">
         <!--[if lt IE 7]>
             <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
         <![endif]-->
 
-      <div id="container"><header>
+      <div id="container"><header role="banner">
             <hgroup>
               <h1><a href="../../../index.html">A fistful of data</a></h1><h2>Data wrangling, rodeo metaphors, and tng references</h2></hgroup>
           </header>
-      <nav>
+      <nav role="navigation">
             <ul>
     <li class="quicklink">
         <script data-gittip-username="jcrudy"
@@ -74,7 +74,7 @@
         src="//gttp.co/v1.js"></script>
     </li>
     <li class="quicklink"><div class="rss">
-        <a href="../../../rss.html" title="Subscribe via RSS"><span class="webfont">B</span></a>
+        <a href="../../../rss.html" title="Subscribe via RSS"><span class="fa fa-lg fa-rss"></span></a>
     </div></li>
 <li class="main-nav">
                   <a href="../../../index.html">Home</a>
@@ -86,7 +86,7 @@
                   <a href="../../../pages/about.html">About me</a>
                 </li>
               </ul>
-          </nav><div class="main-container"><div class="main wrapper clearfix"><article><ul class="related clearfix">
+          </nav><div class="main-container" role="main"><div class="main wrapper body clearfix"><article role="article"><ul class="related clearfix">
             <li class="left"> &laquo; <a href="../../04/11/sampling_from_an_arbitrary_hazard_function.html">How to sample from a hazard function</a></li>
             <li class="right"><a href="../../02/07/boosting_with_mars.html">Boosting with MARS</a> &raquo; </li>
         </ul><div class="timestamp postmeta">
@@ -103,7 +103,7 @@ even if we have learned from the mistake and would never repeat it.</p>
 <p>Today I want to talk about mistakes.  No, not mistakes, really.  A mistake is something we regret, something with lingering consequences, like when you work too much on a laptop and get a painful neck spasm that lasts the rest of the week.  A mistake is an action that, if we had the chance to go back and try again, we would do differently.  But there are some actions that we regret, whose consequences linger painfully, but that we wouldn&#8217;t do differently even if we somehow had the chance.  In either case we limp along as best we can, trying to compensate for that which is irretrievably lost.</p>
 <p>I&#8217;m alluding, of course, to the Box-Cox transformation, and, more generally, to all those nonlinear monotonic transformations which may be applied to a response variable in a regression problem to make the regression perform better.  These kinds of transformations can sometimes mark the difference between a model that is quite predictive and one that is over fit and not at all predictive on the testing set.  The problem, of course, is that once you build your model on the transformed response variable, it becomes difficult to make predications on the original response scale.  One can&#8217;t simply apply the inverse of the original transformation to the predictions and expect everything to be fine.  Everything will not be fine.  Today I want to talk about what happens after the nonlinear monotonic transformation.  It wasn&#8217;t a mistake.  It&#8217;s just a mess, but we&#8217;re in this mess together.</p>
 <p>Let&#8217;s say we&#8217;ve got some response <span class="math">\(y\)</span> and a nonlinear monotonic transformation <span class="math">\(f\left(\right)\)</span>.  Let&#8217;s have <span class="math">\(z=f\left(y\right)\)</span> and say we have some pretty good predictor <span class="math">\(\hat{z}\)</span> of <span class="math">\(E\left(z\right)\)</span>.  Firstly, what makes this predictor pretty good?  How can we compare it to some other predictor, <span class="math">\(\hat{y}\)</span>, that we built for <span class="math">\(E\left(y\right)\)</span> on the original scale?  It&#8217;s a popular practice to use the coefficient of determination, <span class="math">\(R^2\)</span>, to assess the predictive power of a regression model, but <span class="math">\(R^2\)</span> is very sensitive to nonlinear transformations.  A better idea in this context is to use a rank based measure of predictive power, such as Spearman&#8217;s <span class="math">\(\rho\)</span> or Kendall&#8217;s <span class="math">\(\tau\)</span>.  These metrics will not be influenced by any monotonic transformation.  I also like to compare <span class="math">\(R^2\)</span> between the training set and a reserved testing set for my regression models.  Often I will find extreme overfitting on the original response scale while the model I fit on the transformed response shows good generalization.</p>
-<p>So we&#8217;ve assessed predictiveness and generalization for our models, and the best one is <span class="math">\(\hat{z}\)</span>.  Great.  That means we have a model for <span class="math">\(E\left(f\left(y\right)\right)\)</span> and we want a model for <span class="math">\(E\left(y\right)\)</span>.  We know <span class="math">\(f\left(y\right)\)</span>, and since it&#8217;s monotonic we can presumably find the inverse <span class="math">\(f^{-1}\left(z\right)=y\)</span>.  However, <span class="math">\(E\left(f\left(y\right)\right)\ne f\left(E\left(y\right)\right)\)</span> in general, so it is also not generally true that <span class="math">\(f^{-1}\left(E\left(f\left(y\right)\right)\right) = E\left(y\right)\)</span>.  In fact it is usually false.  Super false.  It turns out that this data transformation problem is similar to another problem about which a group of scientists in La Jolla has recently published a few short articles: risk model calibration.  I stumbled upon their publications recently when I was researching the topic of this post <a class="reference internal" href="#jiang2011">[1]</a><a class="reference internal" href="#jiang2011a">[2]</a><a class="reference internal" href="#wu2012">[3]</a>.  The problems are essentially identical: given a predictive model with good rank-based performance (area under the ROC curve in the case of classifiers, Spearman&#8217;s <span class="math">\(\rho\)</span> or Kendall&#8217;s <span class="math">\(tau\)</span> in the case of regression problems with numeric response), find a transformation such that the output of that model accurately predicts the expected value of the quantity of interest.  Generally, a monotonic transformation is desired so that the rank-based performance is preserved, but one of the three methods described by the lab in question actually gives a transformation that is not strictly monotonic.  I don&#8217;t want to describe the methods in detail here.  The papers I cited are freely available online.  I mostly just want to share a few methods I implemented that are very similar (and were inspired by these scientists&#8217; fine work).</p>
+<p>So we&#8217;ve assessed predictiveness and generalization for our models, and the best one is <span class="math">\(\hat{z}\)</span>.  Great.  That means we have a model for <span class="math">\(E\left(f\left(y\right)\right)\)</span> and we want a model for <span class="math">\(E\left(y\right)\)</span>.  We know <span class="math">\(f\left(y\right)\)</span>, and since it&#8217;s monotonic we can presumably find the inverse <span class="math">\(f^{-1}\left(z\right)=y\)</span>.  However, <span class="math">\(E\left(f\left(y\right)\right)\ne f\left(E\left(y\right)\right)\)</span> in general, so it is also not generally true that <span class="math">\(f^{-1}\left(E\left(f\left(y\right)\right)\right) = E\left(y\right)\)</span>.  In fact it is usually false.  Super false.  It turns out that this data transformation problem is similar to another problem about which a group of scientists in La Jolla has recently published a few short articles: risk model calibration.  I stumbled upon their publications recently when I was researching the topic of this post <a class="reference internal" href="#jiang2011" id="id1">[1]</a><a class="reference internal" href="#jiang2011a" id="id2">[2]</a><a class="reference internal" href="#wu2012" id="id3">[3]</a>.  The problems are essentially identical: given a predictive model with good rank-based performance (area under the ROC curve in the case of classifiers, Spearman&#8217;s <span class="math">\(\rho\)</span> or Kendall&#8217;s <span class="math">\(tau\)</span> in the case of regression problems with numeric response), find a transformation such that the output of that model accurately predicts the expected value of the quantity of interest.  Generally, a monotonic transformation is desired so that the rank-based performance is preserved, but one of the three methods described by the lab in question actually gives a transformation that is not strictly monotonic.  I don&#8217;t want to describe the methods in detail here.  The papers I cited are freely available online.  I mostly just want to share a few methods I implemented that are very similar (and were inspired by these scientists&#8217; fine work).</p>
 <div class="section" id="an-example">
 <h2>An example</h2>
 <p>First I&#8217;m going to simulate a simple regression problem with a lognormal response distribution.</p>
@@ -146,7 +146,7 @@ even if we have learned from the mistake and would never repeat it.</p>
 <span class="c"># tau is 0.606838 for the log model and 0.605232 for the direct model</span>
 </pre></div>
 </div>
-<p>In this case, the difference in rank-based performance between the two models is not significant.  I just wanted to show how the comparison might be made.  When using more complex nonparametric methods, data scale has a significant effect on generalization ability of the fitted models.  With linear regression on this particular problem, overfitting is not really an issue.  Now I want to try out some different ways of reversing the log transformation on the predictions.  It turns out that for this particular problem, where the data have a known lognormal distribution, the exact right answer is known.  That is, it is a provable fact that <span class="math">\(E\left(y\right) = e^{E\left(z\right) + \frac{\sigma^2}{2}}\)</span>, where <span class="math">\(\sigma\)</span> is the known scale parameter of the lognormal distribution.  I will use this result as a basis for comparison.  First, I&#8217;m going to try using the obvious and wrong inverse, <span class="math">\(\hat{y} = e^{\hat{z}}\)</span>.  Next, I&#8217;m going to use the two methods I implemented, SmoothIso (based on the idea from <a class="reference internal" href="#jiang2011a">[2]</a>) and SmoothMovingAverage (based more loosely on the idea from <a class="reference internal" href="#jiang2011">[1]</a>).  Finally, I&#8217;ll plot the results together to see how they compare.</p>
+<p>In this case, the difference in rank-based performance between the two models is not significant.  I just wanted to show how the comparison might be made.  When using more complex nonparametric methods, data scale has a significant effect on generalization ability of the fitted models.  With linear regression on this particular problem, overfitting is not really an issue.  Now I want to try out some different ways of reversing the log transformation on the predictions.  It turns out that for this particular problem, where the data have a known lognormal distribution, the exact right answer is known.  That is, it is a provable fact that <span class="math">\(E\left(y\right) = e^{E\left(z\right) + \frac{\sigma^2}{2}}\)</span>, where <span class="math">\(\sigma\)</span> is the known scale parameter of the lognormal distribution.  I will use this result as a basis for comparison.  First, I&#8217;m going to try using the obvious and wrong inverse, <span class="math">\(\hat{y} = e^{\hat{z}}\)</span>.  Next, I&#8217;m going to use the two methods I implemented, SmoothIso (based on the idea from <a class="reference internal" href="#jiang2011a" id="id4">[2]</a>) and SmoothMovingAverage (based more loosely on the idea from <a class="reference internal" href="#jiang2011" id="id5">[1]</a>).  Finally, I&#8217;ll plot the results together to see how they compare.</p>
 <div class="code python highlight-python"><div class="highlight"><pre><span class="c"># Range for plotting calibration curves</span>
 <span class="n">z_range</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">z_hat</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">z_hat</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="o">.</span><span class="mo">05</span><span class="p">)</span>
 
@@ -230,6 +230,8 @@ even if we have learned from the mistake and would never repeat it.</p>
         </ul></article><aside class="sidebar"><section><div class="widget">
     <h1>Recent Posts</h1>
     <ul><li>
+            <a href="../../../2015/07/01/julia_package_development_workflow.html">Julia package development workflow</a>
+        </li><li>
             <a href="../../04/11/sampling_from_an_arbitrary_hazard_function.html">How to sample from a hazard function</a>
         </li><li>
             <a href="#">Transformations and consequences</a>
@@ -241,15 +243,15 @@ even if we have learned from the mistake and would never repeat it.</p>
             <a href="../../../2013/12/02/blogstart.html">Blogstart</a>
         </li></ul>
 </div>
-</section><section><div class="widget" id="searchbox">
-    <h1>Search</h1>
+</section><section><div class="widget" id="searchbox" role="search">
+    <h1><a href="#searchbox">Search</a></h1>
     <form action="../../../search.html" method="get">
         <input type="text" name="q" />
-        <button type="submit"><span class="webfont">L</span></button>
+        <button type="submit"><span class="fa fa-search"></span></button>
     </form>
 </div></section></aside></div> <!-- #main --></div> <!-- #main-container -->
 
-        <div class="footer-container"><footer class="wrapper">&copy; Copyright 2013 and 2014, Jason Rudy. Powered by <a href="http://www.tinkerer.me/">Tinkerer</a> and <a href="http://sphinx.pocoo.org/">Sphinx</a>.</footer></div> <!-- footer-container -->
+        <div class="footer-container" role="contentinfo"><footer class="wrapper">&copy; Copyright 2013 and 2014, Jason Rudy. Powered by <a href="http://www.tinkerer.me/">Tinkerer</a> and <a href="http://sphinx.pocoo.org/">Sphinx</a>.</footer></div> <!-- footer-container -->
 
       </div> <!--! end of #container --><!--[if lt IE 7 ]>
           <script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>

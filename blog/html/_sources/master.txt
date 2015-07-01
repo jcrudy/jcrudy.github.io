@@ -4,6 +4,7 @@ sitemap
 .. toctree::
    :maxdepth: 1
 
+   2015/07/01/julia_package_development_workflow
    2014/04/11/sampling_from_an_arbitrary_hazard_function
    2014/03/16/denorm
    2014/02/07/boosting_with_mars

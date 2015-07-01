@@ -21,7 +21,7 @@
             <link rel="stylesheet" href="../../../_static/main.css" type="text/css">
             <link rel="stylesheet" href="../../../_static/modern5.css" type="text/css">
             <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-            <link rel="stylesheet" href="../../../_static/webfont.css" type="text/css">
+            <link rel="stylesheet" href="../../../_static/font-awesome.min.css" type="text/css">
         <link rel="shortcut icon" href="../../../_static/tinkerer.ico" /><!-- Load modernizr and JQuery -->
         <script src="../../../_static/vendor/modernizr-2.6.2.min.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
@@ -31,12 +31,12 @@
         <link rel="next" title="Blogstart" href="../02/blogstart.html" /><link rel="prev" title="Boosting with MARS" href="../../../2014/02/07/boosting_with_mars.html" /><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../rss.html" /><script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
-        VERSION:     '1.2.1',
+        VERSION:     '1.5',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
       };
-    </script><script type="text/javascript" src="../../../_static/underscore.js"></script><script type="text/javascript" src="../../../_static/doctools.js"></script><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><script type="text/javascript" src="../../../_static/disqus.js"></script>
+    </script><script type="text/javascript" src="../../../_static/underscore.js"></script><script type="text/javascript" src="../../../_static/doctools.js"></script><script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script><script type="text/javascript" src="../../../_static/disqus.js"></script>
 
     <script type="text/javascript">
         $(document).ready(function () {
@@ -57,16 +57,16 @@
             }
         });
     </script></head>
-    <body>
+    <body role="document">
         <!--[if lt IE 7]>
             <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
         <![endif]-->
 
-      <div id="container"><header>
+      <div id="container"><header role="banner">
             <hgroup>
               <h1><a href="../../../index.html">A fistful of data</a></h1><h2>Data wrangling, rodeo metaphors, and tng references</h2></hgroup>
           </header>
-      <nav>
+      <nav role="navigation">
             <ul>
     <li class="quicklink">
         <script data-gittip-username="jcrudy"
@@ -74,7 +74,7 @@
         src="//gttp.co/v1.js"></script>
     </li>
     <li class="quicklink"><div class="rss">
-        <a href="../../../rss.html" title="Subscribe via RSS"><span class="webfont">B</span></a>
+        <a href="../../../rss.html" title="Subscribe via RSS"><span class="fa fa-lg fa-rss"></span></a>
     </div></li>
 <li class="main-nav">
                   <a href="../../../index.html">Home</a>
@@ -86,7 +86,7 @@
                   <a href="../../../pages/about.html">About me</a>
                 </li>
               </ul>
-          </nav><div class="main-container"><div class="main wrapper clearfix"><article><ul class="related clearfix">
+          </nav><div class="main-container" role="main"><div class="main wrapper body clearfix"><article role="article"><ul class="related clearfix">
             <li class="left"> &laquo; <a href="../../../2014/02/07/boosting_with_mars.html">Boosting with MARS</a></li>
             <li class="right"><a href="../02/blogstart.html">Blogstart</a> &raquo; </li>
         </ul><div class="timestamp postmeta">
@@ -133,29 +133,31 @@
 <span class="kn">import</span> <span class="nn">breeze.stats.distributions._</span>
 </pre></div>
 </div>
-<div class="highlight-python"><pre>&lt;console&gt;:7: error: not found: value breeze
+<div class="highlight-python"><div class="highlight"><pre>&lt;console&gt;:7: error: not found: value breeze
        import breeze.linalg._
               ^
 &lt;console&gt;:8: error: not found: value breeze
        import breeze.stats.distributions._
-              ^</pre>
+              ^
+</pre></div>
 </div>
 </div>
 <p>I needed to tell sbt where to find breeze.  It turns out you can use IPython magic to talk to sbt like this.</p>
 <div class="iscala container">
-<div class="code scala highlight-python"><pre>%resolvers += "ScalaNLP Maven2" at "http://repo.scalanlp.org/repo"
+<div class="code scala highlight-python"><div class="highlight"><pre>%resolvers += &quot;ScalaNLP Maven2&quot; at &quot;http://repo.scalanlp.org/repo&quot;
 
-%resolvers += "Scala Tools Snapshots" at "http://scala-tools.org/repo-snapshots/"
+%resolvers += &quot;Scala Tools Snapshots&quot; at &quot;http://scala-tools.org/repo-snapshots/&quot;
 
-%resolvers += "Typesafe Repository" at "http://repo.typesafe.com/typesafe/releases/"
+%resolvers += &quot;Typesafe Repository&quot; at &quot;http://repo.typesafe.com/typesafe/releases/&quot;
 
-%resolvers += "Sonatype Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
+%resolvers += &quot;Sonatype Snapshots&quot; at &quot;https://oss.sonatype.org/content/repositories/snapshots&quot;
 
-%libraryDependencies += "org.scalanlp" %% "breeze" % "0.6-SNAPSHOT"
+%libraryDependencies += &quot;org.scalanlp&quot; %% &quot;breeze&quot; % &quot;0.6-SNAPSHOT&quot;
 
-%update</pre>
+%update
+</pre></div>
 </div>
-<div class="highlight-python"><pre>[info] Resolving org.scalanlp#breeze_2.10;0.6-SNAPSHOT ...
+<div class="highlight-python"><div class="highlight"><pre>[info] Resolving org.scalanlp#breeze_2.10;0.6-SNAPSHOT ...
 [info] Resolving org.scala-lang#scala-library;2.10.3 ...
 [info] Resolving org.scalanlp#breeze-macros_2.10;0.1 ...
 [info] Resolving org.scala-lang#scala-reflect;2.10.3 ...
@@ -184,7 +186,8 @@
 [info] Resolving junit#junit;4.8.2 ...
 [info] Resolving org.apache.commons#commons-math3;3.2 ...
 [info] Resolving com.typesafe#scalalogging-slf4j_2.10;1.0.1 ...
-[info] Resolving org.slf4j#slf4j-api;1.7.2 ...</pre>
+[info] Resolving org.slf4j#slf4j-api;1.7.2 ...
+</pre></div>
 </div>
 <div class="code scala highlight-python"><div class="highlight"><pre><span class="kn">import</span> <span class="nn">breeze.linalg._</span>
 <span class="kn">import</span> <span class="nn">breeze.stats.distributions._</span>
@@ -193,9 +196,10 @@
 </div>
 <p>That worked!  I can now generate my random matrix like this:</p>
 <div class="iscala container">
-<div class="code scala highlight-python"><pre>val x = DenseMatrix.fill(10,10)(Gaussian(0,1).draw())</pre>
+<div class="code scala highlight-python"><div class="highlight"><pre>val x = DenseMatrix.fill(10,10)(Gaussian(0,1).draw())
+</pre></div>
 </div>
-<div class="highlight-python"><pre>0.4695170376110142   0.5086639312405534    ... (10 total)
+<div class="highlight-python"><div class="highlight"><pre>0.4695170376110142   0.5086639312405534    ... (10 total)
 0.2604624080687952   -0.03678938632256435  ...
 -1.0528337756159565  0.10082649287241126   ...
 -0.550492849679171   -0.5761878622563654   ...
@@ -204,7 +208,8 @@
 -0.5879313146878662  1.206569217055404     ...
 1.890300548243616    -0.30273380341887257  ...
 0.24792587873136573  -0.04329745764599858  ...
-1.5057194826425122   0.9516921598743895    ...</pre>
+1.5057194826425122   0.9516921598743895    ...
+</pre></div>
 </div>
 </div>
 </div>
@@ -231,6 +236,8 @@
         </ul></article><aside class="sidebar"><section><div class="widget">
     <h1>Recent Posts</h1>
     <ul><li>
+            <a href="../../../2015/07/01/julia_package_development_workflow.html">Julia package development workflow</a>
+        </li><li>
             <a href="../../../2014/04/11/sampling_from_an_arbitrary_hazard_function.html">How to sample from a hazard function</a>
         </li><li>
             <a href="../../../2014/03/16/denorm.html">Transformations and consequences</a>
@@ -242,15 +249,15 @@
             <a href="../02/blogstart.html">Blogstart</a>
         </li></ul>
 </div>
-</section><section><div class="widget" id="searchbox">
-    <h1>Search</h1>
+</section><section><div class="widget" id="searchbox" role="search">
+    <h1><a href="#searchbox">Search</a></h1>
     <form action="../../../search.html" method="get">
         <input type="text" name="q" />
-        <button type="submit"><span class="webfont">L</span></button>
+        <button type="submit"><span class="fa fa-search"></span></button>
     </form>
 </div></section></aside></div> <!-- #main --></div> <!-- #main-container -->
 
-        <div class="footer-container"><footer class="wrapper">&copy; Copyright 2013 and 2014, Jason Rudy. Powered by <a href="http://www.tinkerer.me/">Tinkerer</a> and <a href="http://sphinx.pocoo.org/">Sphinx</a>.</footer></div> <!-- footer-container -->
+        <div class="footer-container" role="contentinfo"><footer class="wrapper">&copy; Copyright 2013 and 2014, Jason Rudy. Powered by <a href="http://www.tinkerer.me/">Tinkerer</a> and <a href="http://sphinx.pocoo.org/">Sphinx</a>.</footer></div> <!-- footer-container -->
 
       </div> <!--! end of #container --><!--[if lt IE 7 ]>
           <script src="//ajax.googleapis.com/ajax/libs/chrome-frame/1.0.3/CFInstall.min.js"></script>

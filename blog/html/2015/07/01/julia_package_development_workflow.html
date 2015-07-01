@@ -15,7 +15,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <meta name="description" content="This blog is pretty okay">
         <meta name="viewport" content="width=device-width">
-        <title>Blogstart &mdash; A fistful of data</title>
+        <title>Julia package development workflow &mdash; A fistful of data</title>
             <link rel="stylesheet" href="../../../_static/normalize.css" type="text/css">
             <link rel="stylesheet" href="../../../_static/sphinx.css" type="text/css">
             <link rel="stylesheet" href="../../../_static/main.css" type="text/css">
@@ -28,7 +28,7 @@
         <script>window.jQuery || document.write('<script src="../../../_static/vendor/jquery-1.8.2.min.js"><\/script>')</script>
         <script src="../../../_static/plugins.js"></script>
         <script src="../../../_static/main.js"></script>
-        <link rel="prev" title="Introduction to IScala" href="../08/introduction_to_iscala.html" /><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../rss.html" /><script type="text/javascript">
+        <link rel="next" title="How to sample from a hazard function" href="../../../2014/04/11/sampling_from_an_arbitrary_hazard_function.html" /><link rel="alternate" type="application/rss+xml" title="RSS" href="../../../rss.html" /><script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../../../',
         VERSION:     '1.5',
@@ -87,32 +87,80 @@
                 </li>
               </ul>
           </nav><div class="main-container" role="main"><div class="main wrapper body clearfix"><article role="article"><ul class="related clearfix">
-            <li class="left"> &laquo; <a href="../08/introduction_to_iscala.html">Introduction to IScala</a></li>
-            <li class="right"></li>
+            <li class="left"></li>
+            <li class="right"><a href="../../../2014/04/11/sampling_from_an_arbitrary_hazard_function.html">How to sample from a hazard function</a> &raquo; </li>
         </ul><div class="timestamp postmeta">
-            <span>December 02, 2013</span>
+            <span>July 01, 2015</span>
         </div>
-    <div class="section" id="blogstart">
-<h1>Blogstart</h1>
-<p>Once in a great while a new blog is born, and today these rusty tubes are graced with a sparkling new presence.  It&#8217;s a little rough right now, but greatness can grow from meek beginnings.  Let us take a moment to remember some of the great weblogs of the past, whose unfathomable heights this humble site may hope one day to spy on the horizon.  <a class="reference external" href="http://jakevdp.github.io/">Pythonic Perambulations</a>, <a class="reference external" href="http://twiecki.github.io/">While My MCMC Gently Samples</a>, and all the rest, may I follow in your sizable footsteps.  This blog will be much in the spirit of these gentle giants.  It will concern my work and particularly my Python code.  It will contain short pieces of opinion, medium length demonstrations of technology, and longer analyses of data.  It will not be limited to Python or even to programming and statistics, but will tend to concern those topics more than any other.  At least that is my intention.</p>
-<div class="section" id="blog-rules">
-<h2>Blog rules <a class="footnote-reference" href="#f1" id="id1">[1]</a></h2>
-<p>Every blog needs rules.  Here are some.</p>
-<ol class="arabic simple">
-<li>Trust no one.</li>
-<li>Posts occur at least once per month.</li>
-<li>Nothing is final.  If you want to see revision history, the <a class="reference external" href="https://github.com/jcrudy/jcrudy.github.io">blog is hosted on github</a>.</li>
+    <div class="section" id="julia-package-development-workflow">
+<h1>Julia package development workflow</h1>
+<p>In an effort to make a better MARS package and learn Julia, I&#8217;ve been making a MARS package in Julia.  I had a hard time figuring out how to set up my development environment and workflow.  What software do I need?  How do I configure it?  Where do I put stuff?  How do I run my tests?  This post is about my answers to those questions.  I&#8217;m using Mac OS 10.9.5.</p>
+<div class="section" id="software-installation">
+<h2>Software installation</h2>
+<p>I&#8217;m using Juno to edit my Julia files.  Installation is pretty easy.</p>
+<ol class="arabic">
+<li><p class="first">Install the latest Julia and Juno from the <a class="reference external" href="http://julialang.org/downloads/">download site</a>.</p>
+</li>
+<li><dl class="first docutils">
+<dt>You then have to tell Juno where to find Julia.  I guess it comes bundled with its own Julia, which will only lead to problems.  See <a class="reference external" href="http://junolab.org/docs/install-manual.html">the docs</a> for more details on this:</dt>
+<dd><ol class="first last loweralpha simple">
+<li>Start Juno.</li>
+<li>Press Ctrl-Space.</li>
+<li>Type &#8220;Settings: User behaviors&#8221; and press Enter.</li>
+<li>Add [:app :lt.objs.langs.julia/julia-path &#8220;/path/to/julia&#8221;] to the settings file that appears, where &#8220;path/to/julia&#8221; is replaced with the path to the Julia you just installed.  In my case, the path is &#8220;/Applications/Julia-0.3.10.app/Contents/Resources/julia/bin/julia&#8221;.</li>
+</ol>
+</dd>
+</dl>
+</li>
 </ol>
 </div>
-<div class="section" id="blog-implementation">
-<h2>Blog implementation</h2>
-<p>This blog, at least at the moment, is constructed using the <a class="reference external" href="http://tinkerer.me">Tinkerer</a> static blogging framework.  Why Tinkerer you ask?  When choosing a static blogging framework I considered the following options: Octopress, Jekyll, Hyde, Pelican, and Tinkerer.  I ruled out Octopress and Jekyll easily enough.  Although they&#8217;re both popular, they&#8217;re not Python and it would therefore be hard for me to read and understand the source code should the unthinkable occur.  Of the three remaining, I chose Tinkerer because it is based on Sphinx.  Sphinx is a mature and well supported Python tool for generating documentation.  Its main selling points for me are the easy support for math, syntax-highlighted code, bibtex, footnotes, and basically every other imaginable feature of a document via an impressive collection of plugins.  The downside of Tinkerer is that its relatively small userbase has produced very few nice looking themes.  However, I&#8217;ve decided theming is a secondary consideration for now.  Perhaps I can help to remedy the situation in the near future.</p>
-<table class="docutils footnote" frame="void" id="f1" rules="none">
-<colgroup><col class="label" /><col /></colgroup>
-<tbody valign="top">
-<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>As with any ordered set of rules, the zeroeth rule is that there are no rules.</td></tr>
-</tbody>
-</table>
+<div class="section" id="project-setup">
+<h2>Project setup</h2>
+<p>Julia projects are easy to set up if you just want to write scripts or interact with IJulia.  Writing packages is a little trickier.  Here are steps to get you started.</p>
+<ol class="arabic">
+<li><dl class="first docutils">
+<dt>From Juno,</dt>
+<dd><ol class="first last loweralpha simple">
+<li>Type Ctrl-Space.</li>
+<li>Type &#8220;spawn&#8221; and press Enter.</li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>From the spawned Julia terminal,</dt>
+<dd><ol class="first last loweralpha simple">
+<li>Type Pkg.generate(&#8220;MyPackage&#8221;, &#8220;MIT&#8221;).  Here &#8220;MyPackage&#8221; is the name of your package and &#8220;MIT&#8221; is the desired license.  If you don&#8217;t like the license, you can change it later.</li>
+</ol>
+</dd>
+</dl>
+</li>
+<li><p class="first">Julia generated a skeleton for your new package and put it somewhere in your .julia directory.  It kind of sucks having to work with your code in some hidden configuration directory, so move the created package to wherever you like and then create a symbolic link from .julia.  Julia won&#8217;t know the difference.  Also, rename it with a &#8221;.jl&#8221; extension.  In the terminal, do:</p>
+</li>
+</ol>
+<div class="code bash highlight-python"><div class="highlight"><pre>mv ~/.julia/v0.3/MyPackage workspace/MyPackage.jl
+ln -s workspace/MyPackage.jl ~/.julia/v0.3/MyPackage
+</pre></div>
+</div>
+<p>Your Julia version might be different, so check that.</p>
+<ol class="arabic simple" start="4">
+<li>Open your package in Juno.  Go to File-&gt;Open folder and select MyPackage from your workspace.</li>
+</ol>
+</div>
+<div class="section" id="development-cycle">
+<h2>Development cycle</h2>
+<p>Julia automatically created src and test directories, as well as src/MyPackage.jl and test/runtests.jl.  To work on your package, do the following:</p>
+<ol class="arabic simple">
+<li>Edit your code.</li>
+<li>Edit your tests.</li>
+<li>Make sure runtests.jl runs all your tests.  People usually use include() or just write all the tests directly in the file.</li>
+<li>From your spawned julia terminal, do Pkg.test(&#8220;MyPackage&#8221;).</li>
+<li>GOTO 1.</li>
+</ol>
+</div>
+<div class="section" id="version-control-and-publishing">
+<h2>Version control and publishing</h2>
+<p>The package directory created by Julia is already a git repository.  You can add it to github if you want.  I haven&#8217;t published any packages yet, but see the <a class="reference external" href="http://julia.readthedocs.org/en/latest/manual/packages/">Julia manual</a> for information on how to do it.</p>
 </div>
 </div>
 
@@ -120,20 +168,20 @@
         <div class="author">
             <span>Posted by Jason Rudy</span>
         </div>
-        <div class="categories">
-            <span>
-                Filed under:
-                <a href="../../../categories/meta.html">meta</a></span>
-        </div>
         
+        <div class="tags">
+            <span>
+                Tags:
+                <a href="../../../tags/julia.html">julia</a></span>
         </div>
-    <div id="disqus_thread"></div><script type="text/javascript">    var disqus_shortname = "jcrudy-blog";    var disqus_identifier = "2013/12/02/blogstart";    disqus_thread();</script><noscript>Please enable JavaScript to view the    <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><ul class="related clearfix">
-            <li class="left"> &laquo; <a href="../08/introduction_to_iscala.html">Introduction to IScala</a></li>
-            <li class="right"></li>
+        </div>
+    <div id="disqus_thread"></div><script type="text/javascript">    var disqus_shortname = "jcrudy-blog";    var disqus_identifier = "2015/07/01/julia_package_development_workflow";    disqus_thread();</script><noscript>Please enable JavaScript to view the    <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript><ul class="related clearfix">
+            <li class="left"></li>
+            <li class="right"><a href="../../../2014/04/11/sampling_from_an_arbitrary_hazard_function.html">How to sample from a hazard function</a> &raquo; </li>
         </ul></article><aside class="sidebar"><section><div class="widget">
     <h1>Recent Posts</h1>
     <ul><li>
-            <a href="../../../2015/07/01/julia_package_development_workflow.html">Julia package development workflow</a>
+            <a href="#">Julia package development workflow</a>
         </li><li>
             <a href="../../../2014/04/11/sampling_from_an_arbitrary_hazard_function.html">How to sample from a hazard function</a>
         </li><li>
@@ -141,9 +189,9 @@
         </li><li>
             <a href="../../../2014/02/07/boosting_with_mars.html">Boosting with MARS</a>
         </li><li>
-            <a href="../08/introduction_to_iscala.html">Introduction to IScala</a>
+            <a href="../../../2013/12/08/introduction_to_iscala.html">Introduction to IScala</a>
         </li><li>
-            <a href="#">Blogstart</a>
+            <a href="../../../2013/12/02/blogstart.html">Blogstart</a>
         </li></ul>
 </div>
 </section><section><div class="widget" id="searchbox" role="search">
